@@ -40,7 +40,7 @@ body {
 /* Styles for the number links on index.html */
 a.sacred-number {
   text-decoration: none;
-  font-size: 5vw; /* <-- Restaurado a 5vw para DESKTOP en index.html, para que sea grande. */
+  font-size: 1vw; /* <-- VUELVE A SER PEQUEÑO PARA DESKTOP en index.html (como al principio) */
   color: #da0008; /* Cult Order Red */
   transition: 0.3s ease;
 }
@@ -52,7 +52,7 @@ a.sacred-number:hover {
 
 @media (max-width: 768px) {
   a.sacred-number {
-    font-size: 10vw; /* <-- Restaurado a 10vw para MÓVIL en index.html, para que sea grande. */
+    font-size: 5vw; /* <-- VUELVE A SER PEQUEÑO PARA MÓVIL en index.html (como al principio) */
   }
 }
 
@@ -137,7 +137,7 @@ body.sacred7-3-body {
 
 .hidden-message {
     cursor: pointer;
-    font-size: clamp(0.7em, 1.5vw, 1.2em); /* ESTE SE MANTIENE PEQUEÑO para sacred7-3.html */
+    font-size: clamp(0.7em, 1.5vw, 1.2em); /* ESTE SIGUE PEQUEÑO para sacred7-3.html */
     color: #da0008; /* Texto en rojo Cult Order */
     text-align: center;
     padding: 20px;
@@ -146,6 +146,6 @@ body.sacred7-3-body {
 /* Media query for smaller screens (e.g., mobile) for hidden-message */
 @media (max-width: 768px) {
     .hidden-message {
-        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html */
+        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SIGUE PEQUEÑO para móvil en sacred7-3.html */
     }
 }
