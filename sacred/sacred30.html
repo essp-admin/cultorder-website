@@ -5,42 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order - 30</title>
     <link rel="stylesheet" href="../style.css">
-    <style>
-        /* Specific styles for sacred30 to ensure full red background - can also be in style.css */
-        body.sacred30-body {
-            background-color: #da0008; /* Full screen Cult Order Red */
-            display: flex; /* Use flexbox for centering */
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Ensure no scrollbars */
-        }
-        #logo-svg {
-            display: block; /* Show logo by default */
-        }
-        #isotipo-svg {
-            display: none; /* Hide isotipo by default */
-        }
-    </style>
 </head>
 <body class="sacred30-body">
-    <img id="logo-svg" src="../assets/img/logo.svg" alt="Cult Order Logo"> <img id="isotipo-svg" src="../assets/img/isotipo.svg" alt="Cult Order Isotipo"> <script>
+    <img id="logo-svg" src="../assets/img/logo.svg" alt="Cult Order Logo">
+    <img id="isotipo-svg" src="../assets/img/isotipo.svg" alt="Cult Order Isotipo">
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const logo = document.getElementById('logo-svg');
             const isotipo = document.getElementById('isotipo-svg');
 
-            // Set initial state (just in case CSS doesn't load fast enough)
+            // Asegurar que el logo sea visible al cargar la página y el isotipo no.
             logo.style.display = 'block';
             isotipo.style.display = 'none';
 
-            // Click on logo: show isotipo
+            // Click en el logo: Esconder logo, mostrar isotipo.
             logo.addEventListener('click', function() {
                 logo.style.display = 'none';
                 isotipo.style.display = 'block';
             });
 
-            // Click on isotipo: go back to index.html
+            // Click en el isotipo: Volver a index.html.
             isotipo.addEventListener('click', function() {
-                window.location.href = '../index.html'; // Go back to index.html
+                window.location.href = '../index.html';
             });
         });
     </script>
