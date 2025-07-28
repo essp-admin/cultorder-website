@@ -29,7 +29,12 @@ body {
 }
 
 /* --- Index.html specific styles --- */
-/* .container default is row (horizontal). No need for .container.vertical anymore for index.html */
+/* Aseguramos que el body de index.html ocupe toda la altura para que el centrado funcione */
+body.index-body { /* Aplicamos esto solo a la página index.html */
+    height: 100vh; /* Asegura que el body ocupe el 100% de la altura del viewport */
+    /* Las propiedades de display: flex, justify-content, align-items ya están en el body global */
+}
+
 .container {
   display: flex;
   flex-direction: row; /* Números en horizontal */
@@ -40,8 +45,7 @@ body {
 /* Styles for the number links on index.html */
 a.sacred-number {
   text-decoration: none;
-  /* Font size para desktop similar a sacred7-3 */
-  font-size: 1.5vw; /* <-- Ajuste para que sea pequeño en desktop, similar a 7.3 */
+  font-size: 1.5vw; /* <-- Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
   color: #da0008; /* Cult Order Red */
   transition: 0.3s ease;
 }
@@ -51,10 +55,10 @@ a.sacred-number:hover {
   cursor: crosshair;
 }
 
-/* Media query for mobile (index.html) */
+/* Media query for mobile (index.html) - Mantiene el tamaño y posición que ya está bien */
 @media (max-width: 768px) {
   a.sacred-number {
-    font-size: 5vw; /* <-- Mantiene el tamaño para móvil (que me dijiste que estaba bien) */
+    font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html, que ya funciona */
   }
 }
 
