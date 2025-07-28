@@ -24,23 +24,24 @@ html, body {
 /* Flexbox centering for main content (used by index.html by default) */
 body {
   display: flex;
-  justify-content: center;
-  align-items: center; /* Centrado vertical por defecto */
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;   /* Centrado vertical */
 }
 
 /* --- Index.html specific styles --- */
 /* .container default is row (horizontal). No need for .container.vertical anymore for index.html */
 .container {
   display: flex;
-  flex-direction: row; /* Ahora los números estarán en horizontal por defecto */
-  gap: 4vw; /* Responsive gap */
-  flex-wrap: wrap; /* Permitir que los elementos salten de línea en pantallas pequeñas */
+  flex-direction: row; /* Números en horizontal */
+  gap: 4vw; /* Espacio entre los números */
+  flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
 }
 
 /* Styles for the number links on index.html */
 a.sacred-number {
   text-decoration: none;
-  font-size: 1vw; /* Vuelve a ser pequeño para DESKTOP en index.html */
+  /* Font size para desktop similar a sacred7-3 */
+  font-size: 1.5vw; /* <-- Ajuste para que sea pequeño en desktop, similar a 7.3 */
   color: #da0008; /* Cult Order Red */
   transition: 0.3s ease;
 }
@@ -50,28 +51,12 @@ a.sacred-number:hover {
   cursor: crosshair;
 }
 
-/* Media query for mobile (index.html) - mantiene el tamaño grande en móvil y la posición centrada */
+/* Media query for mobile (index.html) */
 @media (max-width: 768px) {
   a.sacred-number {
-    font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html */
+    font-size: 5vw; /* <-- Mantiene el tamaño para móvil (que me dijiste que estaba bien) */
   }
-  /* En móvil no queremos moverlo, por eso no añadimos nada aquí para el body */
 }
-
-/* Media query for desktop (index.html) - para subir un poco los números */
-@media (min-width: 769px) { /* Esto se aplica de 769px de ancho en adelante (desktop) */
-    body.index-body { /* Nos aseguramos de aplicar solo a la página principal */
-        align-items: flex-start; /* Alinea los elementos arriba */
-        padding-top: 40vh; /* Ajusta el relleno superior para bajarlos un poco, o puedes probar con un margin-top negativo */
-        /* Alternativa: Puedes probar con:
-           justify-content: center;
-           margin-top: -5vh; 
-           para empujar todo un 5% del alto del viewport hacia arriba desde el centro.
-        */
-        /* La clave es ajustar este valor para que quede a tu gusto. Prueba con valores como -5vh, -10vh, etc. */
-    }
-}
-
 
 /* --- Sacred Pages Specific Styles --- */
 
