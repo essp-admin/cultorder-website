@@ -62,7 +62,6 @@ a.sacred-number:hover {
 body.sacred001-body {
     background-color: #0c0b0b; /* Ensure black background */
     color: transparent; /* Makes text invisible, but still present for screen readers */
-    /* Or you can use display: none; on the <p> tag directly in HTML */
 }
 
 /* sacred30.html (Red background, logo/isotipo interaction) */
@@ -81,7 +80,6 @@ body.sacred30-body {
     max-height: 50vh; /* Máximo 50% de la altura del viewport en desktop */
     width: auto; /* Mantener relación de aspecto */
     height: auto; /* Mantener relación de aspecto */
-    /* Añadimos estilos para centrar el SVG en sí mismo si su contenedor es más grande */
     display: block;
     margin: auto;
 }
@@ -139,8 +137,8 @@ body.sacred7-3-body {
 
 .hidden-message {
     cursor: pointer;
-    font-size: clamp(1em, 3vw, 2em); /* Fuente más pequeña y responsive */
-    color: #da0008; /* ¡Texto en rojo Cult Order! */
+    font-size: clamp(0.7em, 1.5vw, 1.2em); /* <--- AJUSTADO AQUÍ para hacerlo MÁS PEQUEÑO */
+    color: #da0008; /* Texto en rojo Cult Order */
     text-align: center;
     padding: 20px;
     user-select: none;
@@ -148,6 +146,6 @@ body.sacred7-3-body {
 /* Media query for smaller screens (e.g., mobile) for hidden-message */
 @media (max-width: 768px) {
     .hidden-message {
-        font-size: clamp(1em, 6vw, 2.5em); /* Ajuste para móvil, un poco más grande para ser legible */
+        font-size: clamp(0.8em, 4vw, 2em); /* <--- AJUSTADO AQUÍ para móvil también */
     }
 }
