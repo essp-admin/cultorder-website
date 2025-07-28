@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css"> <style>
         body {
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Evita barras de desplazamiento */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,11 +18,7 @@
         #video-container {
             width: 100vw;
             height: 100vh;
-            display: flex; /* Usamos flex para centrar el video dentro del contenedor */
-            justify-content: center;
-            align-items: center;
-            position: relative; /* Necesario para posicionar el overlay */
-            cursor: pointer; /* Indica que el contenedor es clicable */
+            position: relative; /* Base para posicionar elementos absolutos */
         }
 
         #myVideo {
@@ -30,19 +26,19 @@
             height: 100%;
             object-fit: cover;
             /* Intentamos desactivar las propiedades predeterminadas de interacción */
-            pointer-events: none; /* Esto hace que los clics pasen a través del video al contenedor padre */
+            pointer-events: none; /* Crucial para que los clics pasen al overlay */
         }
 
-        /* Capa superpuesta invisible para capturar los clics y evitar los controles del navegador */
+        /* Capa superpuesta INVISIBLE que captura los clics */
         #click-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10; /* Asegura que esté por encima del video */
+            z-index: 9999; /* ¡Un z-index muy alto para asegurar que esté por encima de todo! */
             cursor: pointer; /* Mantiene el cursor de clic */
-            /* Puedes poner un background-color: rgba(0,0,0,0.1); temporalmente para ver la capa */
+            /* background-color: rgba(255, 0, 0, 0.1); /* Descomenta para ver la capa roja transparente */
         }
     </style>
 </head>
@@ -61,26 +57,55 @@
             const clickOverlay = document.getElementById('click-overlay');
 
             if (videoElement && clickOverlay) {
-                // Intenta reproducir el video. Algunos navegadores pueden bloquear el autoplay con sonido.
-                videoElement.play().catch(error => {
-                    console.log("Autoplay con sonido bloqueado. El usuario deberá interactuar para escuchar el audio. Error:", error);
-                    // Opcional: Si el autoplay falla, puedes mostrar una capa temporal con un mensaje
-                    // o un icono de play para que el usuario inicie la reproducción.
-                    // Sin embargo, por tu requerimiento de "ningún botón", esto podría no ser deseado.
+                // Función para intentar reproducir el video
+                const tryPlayVideo = () => {
+                    videoElement.play().catch(error => {
+                        console.warn("Autoplay con sonido bloqueado. El usuario deberá interactuar para escuchar el audio. Error:", error);
+                        // No mostramos nada por tu requerimiento de 'no botones',
+                        // pero es bueno saber que esto sucede.
+                    });
+                };
+
+                // Intenta reproducir al cargar la página
+                tryPlayVideo();
+
+                // Añadimos el evento de clic a la capa superpuesta
+                clickOverlay.addEventListener('click', function(event) {
+                    event.preventDefault(); // Previene el comportamiento predeterminado del clic
+                    event.stopPropagation(); // Detiene la propagación del evento
+
+                    // Aquí es donde redirigimos a la página principal
+                    window.location.href = 'index.html';
                 });
 
-                // Añadimos el evento de clic a la capa superpuesta, no directamente al video
-                clickOverlay.addEventListener('click', function() {
-                    window.location.href = 'index.html'; // Redirige a index.html
+                // **Eventos adicionales para intentar suprimir los controles nativos del navegador**
+                // Escucha eventos de interacción directamente en el video, aunque pointer-events: none debería ayudar
+                const suppressNativeControls = (event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    // En algunos casos, el navegador puede pausar el video al intentar mostrar controles.
+                    // Aseguramos que se reanude.
+                    if (videoElement.paused) {
+                        tryPlayVideo(); // Reintenta la reproducción
+                    }
+                };
+
+                videoElement.addEventListener('play', suppressNativeControls);
+                videoElement.addEventListener('pause', suppressNativeControls);
+                videoElement.addEventListener('click', suppressNativeControls);
+                videoElement.addEventListener('touchend', suppressNativeControls); // Para dispositivos táctiles
+                videoElement.addEventListener('touchstart', suppressNativeControls); // Para dispositivos táctiles
+                videoElement.addEventListener('seeking', suppressNativeControls); // Cuando el usuario intenta buscar
+                videoElement.addEventListener('webkitbeginfullscreen', suppressNativeControls); // Safari iOS
+                videoElement.addEventListener('webkitendfullscreen', suppressNativeControls); // Safari iOS
+                videoElement.addEventListener('loadedmetadata', function() {
+                    // Aseguramos que el video esté en un estado reproducible y no pausado
+                    if (videoElement.paused) {
+                        tryPlayVideo();
+                    }
                 });
 
-                // Evitar que el video se pause si se hace clic directamente sobre él (aunque pointer-events: none debería ayudar)
-                videoElement.addEventListener('click', function(event) {
-                    event.preventDefault(); // Previene el comportamiento por defecto de pausar/mostrar controles
-                    event.stopPropagation(); // Detiene la propagación del evento para que no afecte a otros elementos
-                });
-
-                // También podemos intentar evitar el evento 'contextmenu' (clic derecho o pulsación larga en móvil)
+                // Evitar menú contextual (clic derecho)
                 videoElement.addEventListener('contextmenu', function(event) {
                     event.preventDefault();
                 });
