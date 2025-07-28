@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css"> <style>
         body {
             margin: 0;
-            overflow: hidden; /* Evita barras de desplazamiento */
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,27 +18,24 @@
         #video-container {
             width: 100vw;
             height: 100vh;
-            position: relative; /* Base para posicionar elementos absolutos */
+            position: relative;
         }
 
         #myVideo {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Intentamos desactivar las propiedades predeterminadas de interacción */
-            pointer-events: none; /* Crucial para que los clics pasen al overlay */
+            pointer-events: none;
         }
 
-        /* Capa superpuesta INVISIBLE que captura los clics */
         #click-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999; /* ¡Un z-index muy alto para asegurar que esté por encima de todo! */
-            cursor: pointer; /* Mantiene el cursor de clic */
-            /* background-color: rgba(255, 0, 0, 0.1); /* Descomenta para ver la capa roja transparente */
+            z-index: 9999;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -49,7 +46,8 @@
             <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
             Tu navegador no soporta el tag de video.
         </video>
-        <div id="click-overlay"></div> </div>
+        <div id="click-overlay"></div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -57,55 +55,46 @@
             const clickOverlay = document.getElementById('click-overlay');
 
             if (videoElement && clickOverlay) {
-                // Función para intentar reproducir el video
                 const tryPlayVideo = () => {
                     videoElement.play().catch(error => {
                         console.warn("Autoplay con sonido bloqueado. El usuario deberá interactuar para escuchar el audio. Error:", error);
-                        // No mostramos nada por tu requerimiento de 'no botones',
-                        // pero es bueno saber que esto sucede.
                     });
                 };
 
-                // Intenta reproducir al cargar la página
                 tryPlayVideo();
 
-                // Añadimos el evento de clic a la capa superpuesta
                 clickOverlay.addEventListener('click', function(event) {
-                    event.preventDefault(); // Previene el comportamiento predeterminado del clic
-                    event.stopPropagation(); // Detiene la propagación del evento
+                    event.preventDefault();
+                    event.stopPropagation();
 
-                    // Aquí es donde redirigimos a la página principal
-                    window.location.href = 'index.html';
+                    // *** CAMBIO CRÍTICO AQUÍ: Usar una ruta absoluta desde la raíz ***
+                    window.location.href = '/index.html'; // Esto redirigirá a www.cult-order.com/index.html
+                    // O, si prefieres la URL completa por si acaso:
+                    // window.location.href = 'https://www.cult-order.com/';
                 });
 
-                // **Eventos adicionales para intentar suprimir los controles nativos del navegador**
-                // Escucha eventos de interacción directamente en el video, aunque pointer-events: none debería ayudar
                 const suppressNativeControls = (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    // En algunos casos, el navegador puede pausar el video al intentar mostrar controles.
-                    // Aseguramos que se reanude.
                     if (videoElement.paused) {
-                        tryPlayVideo(); // Reintenta la reproducción
+                        tryPlayVideo();
                     }
                 };
 
                 videoElement.addEventListener('play', suppressNativeControls);
                 videoElement.addEventListener('pause', suppressNativeControls);
                 videoElement.addEventListener('click', suppressNativeControls);
-                videoElement.addEventListener('touchend', suppressNativeControls); // Para dispositivos táctiles
-                videoElement.addEventListener('touchstart', suppressNativeControls); // Para dispositivos táctiles
-                videoElement.addEventListener('seeking', suppressNativeControls); // Cuando el usuario intenta buscar
-                videoElement.addEventListener('webkitbeginfullscreen', suppressNativeControls); // Safari iOS
-                videoElement.addEventListener('webkitendfullscreen', suppressNativeControls); // Safari iOS
+                videoElement.addEventListener('touchend', suppressNativeControls);
+                videoElement.addEventListener('touchstart', suppressNativeControls);
+                videoElement.addEventListener('seeking', suppressNativeControls);
+                videoElement.addEventListener('webkitbeginfullscreen', suppressNativeControls);
+                videoElement.addEventListener('webkitendfullscreen', suppressNativeControls);
                 videoElement.addEventListener('loadedmetadata', function() {
-                    // Aseguramos que el video esté en un estado reproducible y no pausado
                     if (videoElement.paused) {
                         tryPlayVideo();
                     }
                 });
 
-                // Evitar menú contextual (clic derecho)
                 videoElement.addEventListener('contextmenu', function(event) {
                     event.preventDefault();
                 });
