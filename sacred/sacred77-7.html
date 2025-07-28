@@ -67,10 +67,8 @@
                     event.preventDefault();
                     event.stopPropagation();
 
-                    // *** CAMBIO CRÍTICO AQUÍ: Usar una ruta absoluta desde la raíz ***
-                    window.location.href = '/index.html'; // Esto redirigirá a www.cult-order.com/index.html
-                    // O, si prefieres la URL completa por si acaso:
-                    // window.location.href = 'https://www.cult-order.com/';
+                    // *** CAMBIO CRÍTICO AQUÍ: Usamos la URL completa del dominio principal ***
+                    window.location.href = 'https://www.cult-order.com/'; 
                 });
 
                 const suppressNativeControls = (event) => {
