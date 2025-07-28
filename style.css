@@ -38,14 +38,14 @@ body.index-body { /* Aplicamos esto solo a la página index.html */
 .container {
   display: flex;
   flex-direction: row; /* Números en horizontal */
-  gap: 4vw; /* Espacio entre los números */
+  gap: 4vw; /* Espacio entre los números por defecto (desktop) */
   flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
 }
 
 /* Styles for the number links on index.html */
 a.sacred-number {
   text-decoration: none;
-  font-size: 1.5vw; /* <-- Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
+  font-size: 1.5vw; /* Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
   color: #da0008; /* Cult Order Red */
   transition: 0.3s ease;
 }
@@ -55,10 +55,13 @@ a.sacred-number:hover {
   cursor: crosshair;
 }
 
-/* Media query for mobile (index.html) - Mantiene el tamaño y posición que ya está bien */
+/* Media query for mobile (index.html) - Ajusta el gap para separar los números */
 @media (max-width: 768px) {
   a.sacred-number {
     font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html, que ya funciona */
+  }
+  .container {
+    gap: 8vw; /* <-- AJUSTADO AQUÍ: Mayor espacio entre los números en móvil. Prueba con 8vw, 10vw, etc. */
   }
 }
 
