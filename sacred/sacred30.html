@@ -4,30 +4,85 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order - 30</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css"> <style>
+        /* Estilos para asegurar que las imágenes se centren y cubran la pantalla */
+        body {
+            margin: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* Fondo negro, ajusta si es necesario */
+            cursor: pointer; /* Indica que la pantalla es clicable */
+        }
+
+        /* Estilos para las imágenes, aseguran que se centren y se ajusten */
+        #logo-svg,
+        #isotipo-svg {
+            max-width: 90%; /* Ajusta el tamaño máximo de la imagen */
+            max-height: 90vh; /* Ajusta la altura máxima de la imagen */
+            object-fit: contain; /* Mantiene la proporción de la imagen sin recortar */
+            position: absolute; /* Para centrado absoluto */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Centra la imagen perfectamente */
+            transition: opacity 0.5s ease-in-out; /* Transición suave al aparecer/desaparecer */
+        }
+
+        /* Clases para controlar la visibilidad */
+        .hidden {
+            opacity: 0;
+            pointer-events: none; /* Asegura que no se pueda hacer clic en este elemento cuando está oculto */
+        }
+
+        .visible {
+            opacity: 1;
+            pointer-events: auto; /* Permite interacciones cuando es visible */
+        }
+    </style>
 </head>
 <body class="sacred30-body">
-    <img id="logo-svg" src="../assets/img/logo.svg" alt="Cult Order Logo">
-    <img id="isotipo-svg" src="../assets/img/isotipo.svg" alt="Cult Order Isotipo">
+    <img id="logo-svg" src="../assets/img/logo.svg" alt="Cult Order Logo" class="visible">
+    <img id="isotipo-svg" src="../assets/img/isotipo.svg" alt="Cult Order Isotipo" class="hidden">
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const logo = document.getElementById('logo-svg');
             const isotipo = document.getElementById('isotipo-svg');
+            const body = document.body; // Escucharemos clics en todo el cuerpo
+
+            let currentScreen = 'logo'; // Estado inicial: 'logo' es visible
 
             // Asegurar que el logo sea visible al cargar la página y el isotipo no.
-            logo.style.display = 'block';
-            isotipo.style.display = 'none';
+            // Esto se manejará con las clases CSS, pero lo dejamos explícito aquí por claridad
+            logo.classList.add('visible');
+            isotipo.classList.add('hidden');
 
-            // Click en el logo: Esconder logo, mostrar isotipo.
-            logo.addEventListener('click', function() {
-                logo.style.display = 'none';
-                isotipo.style.display = 'block';
+            // Escuchar clics en cualquier parte del body
+            body.addEventListener('click', function() {
+                if (currentScreen === 'logo') {
+                    // Si actualmente estamos mostrando el logo, cambiamos al isotipo
+                    logo.classList.remove('visible');
+                    logo.classList.add('hidden');
+                    isotipo.classList.remove('hidden');
+                    isotipo.classList.add('visible');
+                    currentScreen = 'isotipo'; // Actualizamos el estado
+                } else if (currentScreen === 'isotipo') {
+                    // Si actualmente estamos mostrando el isotipo, redirigimos a index.html
+                    window.location.href = '../index.html'; // Mantener tu ruta relativa actual
+                }
             });
 
-            // Click en el isotipo: Volver a index.html.
-            isotipo.addEventListener('click', function() {
-                window.location.href = '../index.html';
+            // Evitar el comportamiento por defecto de las imágenes si se hiciera clic directamente en ellas
+            // (aunque el evento principal está en el body, esto añade robustez)
+            logo.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+            });
+            isotipo.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
             });
         });
     </script>
