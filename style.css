@@ -1,0 +1,49 @@
+
+@font-face {
+  font-family: 'OCRAStd';
+  src: url('assets/fonts/OCRAStd.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  background-color: #0c0b0b;
+  color: #da0008;
+  font-family: 'OCRAStd', monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  gap: 4vw;
+  flex-wrap: wrap;
+}
+
+.container.vertical {
+  flex-direction: column;
+  text-align: center;
+  gap: 2vh;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1vw;
+  color: #da0008;
+  transition: 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.5;
+  cursor: crosshair;
+}
+
+@media (max-width: 768px) {
+  a {
+    font-size: 5vw;
+  }
+}
