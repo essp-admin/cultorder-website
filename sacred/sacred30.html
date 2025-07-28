@@ -15,34 +15,44 @@
             min-height: 100vh;
             background-color: #000; /* Fondo negro, ajusta si es necesario */
             cursor: pointer; /* Indica que toda la pantalla es clicable */
-            /* Quitar la clase 'sacred30-body' del body si ya no la necesitas para otros estilos */
-            /* Si 'sacred30-body' tiene estilos de tamaño o posicionamiento que quieres mantener,
-               déjala en el <body> y ajusta los estilos de #logo-svg, #isotipo-svg abajo
-               para no interferir o para complementarlos. */
         }
 
-        /* Estilos para las imágenes: Mantener el centrado, pero eliminar control de tamaño
-           para que tu style.css o el tamaño original de las SVG se mantenga. */
+        /* Estilos para las imágenes: Mantener el centrado */
         #logo-svg,
         #isotipo-svg {
-            /* Eliminadas las propiedades max-width, max-height, object-fit. */
-            /* ¡Ahora el tamaño será el que le dé tu style.css o el tamaño intrínseco de la SVG! */
             position: absolute; /* Para centrado absoluto */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%); /* Centra la imagen perfectamente */
             transition: opacity 0.5s ease-in-out; /* Transición suave al aparecer/desaparecer */
+            /* ¡Importante! Aquí no definimos el tamaño base, se respeta el de style.css o el intrínseco de la SVG. */
         }
 
         /* Clases para controlar la visibilidad */
         .hidden {
             opacity: 0;
-            pointer-events: none; /* Asegura que no se pueda hacer clic en este elemento cuando está oculto */
+            pointer-events: none;
         }
 
         .visible {
             opacity: 1;
-            pointer-events: auto; /* Permite interacciones cuando es visible */
+            pointer-events: auto;
+        }
+
+        /* ****************************************************** */
+        /* ***** AJUSTE ESPECÍFICO PARA EL ISOTIPO EN MÓVIL ***** */
+        /* ****************************************************** */
+        @media (max-width: 768px) { /* Este estilo se aplica en pantallas de 768px de ancho o menos (típicamente móviles y tablets) */
+            #isotipo-svg {
+                max-width: 80%; /* Reduce el tamaño del isotipo al 80% del ancho del viewport en móviles */
+                /* Puedes ajustar este porcentaje (ej: 70%, 75%) hasta que lo veas perfecto. */
+                /* Si también es demasiado alto, puedes añadir: */
+                /* max-height: 70vh; */
+            }
+            /* Si el LOGO también se viera grande en móvil y quisieras ajustarlo, podrías añadir algo similar: */
+            /* #logo-svg {
+                max-width: 85%;
+            } */
         }
     </style>
 </head>
@@ -54,15 +64,13 @@
         document.addEventListener('DOMContentLoaded', function() {
             const logo = document.getElementById('logo-svg');
             const isotipo = document.getElementById('isotipo-svg');
-            const body = document.body; // Escucharemos clics en todo el cuerpo
+            const body = document.body;
 
             let currentScreen = 'logo'; // Estado inicial: 'logo' es visible
 
-            // Asegurar el estado inicial al cargar la página (se maneja con las clases HTML/CSS también)
             logo.classList.add('visible');
             isotipo.classList.add('hidden');
 
-            // Escuchar clics en cualquier parte del body
             body.addEventListener('click', function() {
                 if (currentScreen === 'logo') {
                     // Si estamos en el logo, cambiar al isotipo
@@ -70,16 +78,12 @@
                     logo.classList.add('hidden');
                     isotipo.classList.remove('hidden');
                     isotipo.classList.add('visible');
-                    currentScreen = 'isotipo'; // Actualizamos el estado
+                    currentScreen = 'isotipo';
                 } else if (currentScreen === 'isotipo') {
                     // Si estamos en el isotipo, redirigir a index.html
-                    window.location.href = '../index.html'; // Mantener tu ruta relativa actual
+                    window.location.href = '../index.html';
                 }
             });
-
-            // IMPORTANTE: Eliminados los event listeners específicos para logo/isotipo
-            // para que los clics siempre lleguen al 'body'.
-            // No es necesario detener la propagación aquí si solo el body tiene el listener principal.
         });
     </script>
 </body>
