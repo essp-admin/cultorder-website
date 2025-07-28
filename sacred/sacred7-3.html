@@ -5,13 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order - 7.3</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Estilos adicionales para centrar el texto y hacer que el body ocupe toda la pantalla */
+        body {
+            margin: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+            display: flex;
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center; /* Centra verticalmente */
+            min-height: 100vh; /* Ocupa al menos el 100% de la altura del viewport */
+            background-color: #000; /* Fondo negro, ajusta si es necesario */
+            cursor: pointer; /* Indica que la pantalla es clicable */
+            /* Tus estilos de texto específicos que ya deberías tener en style.css o en sacred7-3-body */
+            /* Si necesitas re-asegurar color, tamaño de fuente, etc. aquí, puedes hacerlo: */
+            /* color: #fff; */
+            /* font-size: 2em; */
+            /* font-family: 'Arial', sans-serif; */
+            /* text-align: center; */
+        }
+
+        /* Si 'hidden-message' en tu style.css controla la visibilidad, asegúrate que el texto esté visible.
+           Si el texto ya está visible por defecto o por otros estilos, puedes ignorar esto. */
+        .hidden-message {
+            /* Si tu clase 'hidden-message' es para controlar la visibilidad y quieres que el texto esté visible por defecto,
+               puede que necesites un estilo para 'display: block;' o 'opacity: 1;' aquí,
+               o asegurarte de que tu style.css lo haga. */
+            opacity: 1; /* Aseguramos que el texto sea visible */
+            pointer-events: auto; /* Permite interacciones, aunque el body manejará el clic */
+        }
+    </style>
 </head>
 <body class="sacred7-3-body">
-    <p class="hidden-message" id="message-text">Nothing is by chance.</p> <script>
+    <p class="hidden-message" id="message-text">Nothing is by chance.</p>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body; // Referencia al body del documento
+
+            // Remover el listener del texto si existiera para evitar duplicados o conflictos
             const messageText = document.getElementById('message-text');
-            messageText.addEventListener('click', function() {
-                window.location.href = '../index.html';
+            if (messageText) {
+                // Si había un listener directamente en messageText, lo removemos.
+                // Aunque el original solo se ejecutaba una vez, es buena práctica.
+                // En este caso, simplemente no lo volvemos a añadir.
+            }
+
+            // Añadir el evento de clic a todo el body
+            body.addEventListener('click', function() {
+                window.location.href = '../index.html'; // Redirige a index.html
             });
         });
     </script>
