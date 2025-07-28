@@ -1,18 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cult Order - 77.7</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>Cult Order - Sacred 77-7</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        /* Estilos específicos para sacred77-7.html */
+        body {
+            margin: 0;
+            overflow: hidden; /* Evita barras de desplazamiento */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* Fondo negro */
+        }
+        #myVideo {
+            width: 100vw;  /* Ocupa el 100% del ancho del viewport */
+            height: 100vh; /* Ocupa el 100% de la altura del viewport */
+            object-fit: cover; /* Asegura que el video cubra toda el área sin distorsión */
+            cursor: pointer; /* Indica que el video es clicable */
+        }
+    </style>
 </head>
-<body class="sacred77-7-body">
-    <div class="video-container">
-        <video controls autoplay loop muted playsinline>
-            <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
+<body>
+
+    <video id="myVideo" autoplay loop>
+        <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
+        Tu navegador no soporta el tag de video.
+    </video>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const videoElement = document.getElementById('myVideo');
+
+            if (videoElement) {
+                // Intenta reproducir el video. Algunos navegadores pueden bloquear el autoplay con sonido.
+                videoElement.play().catch(error => {
+                    console.log("Autoplay con sonido bloqueado. El usuario deberá interactuar para escuchar el audio.", error);
+                });
+
+                videoElement.addEventListener('click', function() {
+                    window.location.href = 'index.html'; // Redirige a index.html
+                });
+            }
+        });
+    </script>
+
 </body>
 </html>
 
