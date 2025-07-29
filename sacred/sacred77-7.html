@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order - Sacred 77-7</title>
-    <link rel="stylesheet" href="style.css"> <style>
+    <link rel="stylesheet" href="style.css">
+    <style>
         body {
             margin: 0;
             overflow: hidden;
@@ -25,7 +26,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none;
+            pointer-events: none; /* Crucial para que los clics pasen al overlay */
         }
 
         #click-overlay {
@@ -34,8 +35,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
-            cursor: pointer;
+            z-index: 9999; /* ¡Un z-index muy alto para asegurar que esté por encima de todo! */
+            cursor: pointer; /* Mantiene el cursor de clic */
         }
     </style>
 </head>
@@ -55,46 +56,61 @@
             const clickOverlay = document.getElementById('click-overlay');
 
             if (videoElement && clickOverlay) {
+                // Función para intentar reproducir el video.
+                // Esta función manejará los intentos de autoplay y los errores.
                 const tryPlayVideo = () => {
                     videoElement.play().catch(error => {
-                        console.warn("Autoplay con sonido bloqueado. El usuario deberá interactuar para escuchar el audio. Error:", error);
+                        console.warn("Autoplay con sonido bloqueado o fallo al reproducir. El usuario deberá interactuar para escuchar el audio. Error:", error);
+                        // Este error es una advertencia en la consola del navegador si el autoplay con audio está bloqueado.
+                        // La aparición de este error no significa que el código esté mal, sino que el navegador ha bloqueado el autoplay.
                     });
                 };
 
+                // Intenta reproducir al cargar la página
                 tryPlayVideo();
 
+                // Añadimos el evento de clic a la capa superpuesta para ir a la home
                 clickOverlay.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
+                    event.preventDefault(); // Previene cualquier comportamiento predeterminado del clic en el overlay
+                    event.stopPropagation(); // Detiene la propagación del evento
 
-                    // *** CAMBIO CRÍTICO AQUÍ: Usamos la URL completa del dominio principal ***
+                    // *** Asegúrate de que esta URL sea la correcta para tu home ***
                     window.location.href = 'https://www.cult-order.com/'; 
                 });
 
-                const suppressNativeControls = (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
+                // **Eventos para intentar suprimir los controles nativos que se activan con ciertas interacciones**
+                // Ahora somos menos agresivos: NO prevenimos 'play'/'pause' directamente en el evento.
+                // Nos centramos en bloquear la aparición de los controles y el modo pantalla completa.
+                const suppressSpecificNativeControls = (event) => {
+                    event.preventDefault(); // Evita el comportamiento predeterminado del navegador
+                    event.stopPropagation(); // Evita que el evento se propague
+
+                    // Si por alguna razón el video se pausa, intentamos reanudarlo inmediatamente.
                     if (videoElement.paused) {
                         tryPlayVideo();
                     }
                 };
 
-                videoElement.addEventListener('play', suppressNativeControls);
-                videoElement.addEventListener('pause', suppressNativeControls);
-                videoElement.addEventListener('click', suppressNativeControls);
-                videoElement.addEventListener('touchend', suppressNativeControls);
-                videoElement.addEventListener('touchstart', suppressNativeControls);
-                videoElement.addEventListener('seeking', suppressNativeControls);
-                videoElement.addEventListener('webkitbeginfullscreen', suppressNativeControls);
-                videoElement.addEventListener('webkitendfullscreen', suppressNativeControls);
+                // Escucha eventos de interacción que puedan mostrar controles o ir a pantalla completa
+                videoElement.addEventListener('click', suppressSpecificNativeControls);
+                videoElement.addEventListener('touchend', suppressSpecificNativeControls);
+                videoElement.addEventListener('touchstart', suppressSpecificNativeControls);
+                videoElement.addEventListener('seeking', suppressSpecificNativeControls);
+                videoElement.addEventListener('webkitbeginfullscreen', suppressSpecificNativeControls); // Específico de Safari iOS
+                videoElement.addEventListener('webkitendfullscreen', suppressSpecificNativeControls);   // Específico de Safari iOS
+                videoElement.addEventListener('fullscreenchange', suppressSpecificNativeControls);      // Para otros navegadores
+                videoElement.addEventListener('webkitfullscreenchange', suppressSpecificNativeControls); // Para otros navegadores
+
+                // Evitar menú contextual (clic derecho)
+                videoElement.addEventListener('contextmenu', function(event) {
+                    event.preventDefault();
+                });
+
+                // Asegurar que el video intente reproducirse si por alguna razón está pausado después de cargar metadatos
                 videoElement.addEventListener('loadedmetadata', function() {
                     if (videoElement.paused) {
                         tryPlayVideo();
                     }
-                });
-
-                videoElement.addEventListener('contextmenu', function(event) {
-                    event.preventDefault();
                 });
             }
         });
