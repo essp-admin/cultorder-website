@@ -104,9 +104,6 @@
                     window.location.href = 'https://www.cult-order.com/'; 
                 });
                 
-                // Mantenemos esta lógica como medida de seguridad, pero ahora
-                // con 'pointer-events: none;' en el video, estos eventos no deberían
-                // activarse al pulsar sobre él.
                 const suppressSpecificNativeControls = (event) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -114,6 +111,7 @@
                         tryPlayVideo();
                     }
                 };
+
                 videoElement.addEventListener('click', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchend', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchstart', suppressSpecificNativeControls);
