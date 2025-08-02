@@ -26,7 +26,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* pointer-events: none; ya no es estrictamente necesario, ya que el overlay siempre está por encima */
+            pointer-events: none; /* ¡CRUCIAL! Los clics ahora pasarán a las capas superpuestas. */
         }
 
         #start-overlay {
@@ -38,8 +38,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10000; /* ¡Por encima de todo! */
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para ver el video mudo */
+            z-index: 10000;
+            background-color: rgba(0, 0, 0, 0.5);
             cursor: pointer;
             color: white;
             font-family: Arial, sans-serif;
@@ -55,6 +55,7 @@
             height: 100%;
             z-index: 9999;
             cursor: pointer;
+            display: none; /* Empezamos con esta capa oculta */
         }
     </style>
 </head>
@@ -68,7 +69,7 @@
         <div id="start-overlay">
             Pulsa para activar el sonido.
         </div>
-        <div id="click-overlay" style="display: none;"></div>
+        <div id="click-overlay"></div>
     </div>
 
     <script>
@@ -78,40 +79,34 @@
             const clickOverlay = document.getElementById('click-overlay');
 
             if (videoElement && startOverlay && clickOverlay) {
-                // Función para intentar reproducir el video.
                 const tryPlayVideo = () => {
                     videoElement.play().catch(error => {
                         console.warn("Fallo al reproducir el video. Error:", error);
                     });
                 };
 
-                // El video ya está configurado con autoplay muted, así que debería empezar a reproducirse solo.
-                // El primer clic en la pantalla es para activar el sonido
                 startOverlay.addEventListener('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
                     
-                    // 1. Quitar el silencio (unmute) del video
                     videoElement.muted = false;
                     
-                    // 2. Ocultar el overlay de inicio
                     startOverlay.style.display = 'none';
 
-                    // 3. Mostrar el overlay de clic para la redirección
                     clickOverlay.style.display = 'block';
 
-                    // 4. Intentar reproducir de nuevo por si se pausó
                     tryPlayVideo();
                 });
 
-                // El segundo clic en la pantalla (ahora en el click-overlay) es para ir a la home
                 clickOverlay.addEventListener('click', function(event) {
                     event.preventDefault();
                     event.stopPropagation();
                     window.location.href = 'https://www.cult-order.com/'; 
                 });
                 
-                // Mantenemos la lógica de supresión de controles por si acaso
+                // Mantenemos esta lógica como medida de seguridad, pero ahora
+                // con 'pointer-events: none;' en el video, estos eventos no deberían
+                // activarse al pulsar sobre él.
                 const suppressSpecificNativeControls = (event) => {
                     event.preventDefault();
                     event.stopPropagation();
@@ -119,7 +114,6 @@
                         tryPlayVideo();
                     }
                 };
-
                 videoElement.addEventListener('click', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchend', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchstart', suppressSpecificNativeControls);
