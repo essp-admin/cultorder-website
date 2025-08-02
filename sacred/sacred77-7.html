@@ -84,16 +84,23 @@
             videoElement.playsinline = true; // Importante para iOS
             videoElement.src = 'https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4';
             
-            videoContainer.prepend(videoElement); // Coloca el video como primer elemento en el contenedor
-
+            videoContainer.prepend(videoElement);
+            
             const tryPlayVideo = () => {
                 videoElement.play().catch(error => {
                     console.warn("Fallo al reproducir el video. Error:", error);
                 });
             };
 
-            // El video comienza a reproducirse en silencio gracias a `autoplay` y `muted`
-            tryPlayVideo();
+            // Intentar reproducir el video solo cuando los metadatos hayan cargado
+            videoElement.addEventListener('loadedmetadata', () => {
+                tryPlayVideo();
+            });
+            
+            // Si el video se pausa por alguna razón (incluso accidentalmente), intenta reproducirlo de nuevo.
+            videoElement.addEventListener('pause', () => {
+                tryPlayVideo();
+            });
 
             startOverlay.addEventListener('click', function(event) {
                 event.preventDefault();
