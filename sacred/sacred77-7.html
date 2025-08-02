@@ -81,7 +81,7 @@
             videoElement.autoplay = true;
             videoElement.muted = true;
             videoElement.loop = true;
-            videoElement.playsinline = true; // Importante para iOS
+            videoElement.playsinline = true;
             videoElement.src = 'https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4';
             
             videoContainer.prepend(videoElement);
@@ -92,12 +92,10 @@
                 });
             };
 
-            // Intentar reproducir el video solo cuando los metadatos hayan cargado
             videoElement.addEventListener('loadedmetadata', () => {
                 tryPlayVideo();
             });
             
-            // Si el video se pausa por alguna razón (incluso accidentalmente), intenta reproducirlo de nuevo.
             videoElement.addEventListener('pause', () => {
                 tryPlayVideo();
             });
@@ -120,11 +118,8 @@
                 window.location.href = 'https://www.cult-order.com/'; 
             });
 
-            // Evitamos cualquier control nativo, ya que el video no recibe clics
-            videoContainer.addEventListener('click', (event) => {
-                event.stopPropagation();
-                event.preventDefault();
-            }, { capture: true });
+            // Hemos eliminado el código que capturaba todos los clics en el contenedor,
+            // ya que era el que probablemente estaba bloqueando la navegación.
         });
     </script>
 </body>
