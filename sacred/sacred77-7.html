@@ -22,11 +22,13 @@
             position: relative;
         }
 
-        #myVideo {
+        #video-background {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none; /* ¡CRUCIAL! Los clics ahora pasarán a las capas superpuestas. */
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         #start-overlay {
@@ -55,17 +57,13 @@
             height: 100%;
             z-index: 9999;
             cursor: pointer;
-            display: none; /* Empezamos con esta capa oculta */
+            display: none;
         }
     </style>
 </head>
 <body>
 
     <div id="video-container">
-        <video id="myVideo" autoplay muted loop>
-            <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
-            Tu navegador no soporta el tag de video.
-        </video>
         <div id="start-overlay">
             Pulsa para activar el sonido.
         </div>
@@ -74,57 +72,52 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const videoElement = document.getElementById('myVideo');
+            const videoContainer = document.getElementById('video-container');
             const startOverlay = document.getElementById('start-overlay');
             const clickOverlay = document.getElementById('click-overlay');
+            
+            const videoElement = document.createElement('video');
+            videoElement.id = 'video-background';
+            videoElement.autoplay = true;
+            videoElement.muted = true;
+            videoElement.loop = true;
+            videoElement.playsinline = true; // Importante para iOS
+            videoElement.src = 'https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4';
+            
+            videoContainer.prepend(videoElement); // Coloca el video como primer elemento en el contenedor
 
-            if (videoElement && startOverlay && clickOverlay) {
-                const tryPlayVideo = () => {
-                    videoElement.play().catch(error => {
-                        console.warn("Fallo al reproducir el video. Error:", error);
-                    });
-                };
-
-                startOverlay.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    
-                    videoElement.muted = false;
-                    
-                    startOverlay.style.display = 'none';
-
-                    clickOverlay.style.display = 'block';
-
-                    tryPlayVideo();
+            const tryPlayVideo = () => {
+                videoElement.play().catch(error => {
+                    console.warn("Fallo al reproducir el video. Error:", error);
                 });
+            };
 
-                clickOverlay.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    window.location.href = 'https://www.cult-order.com/'; 
-                });
+            // El video comienza a reproducirse en silencio gracias a `autoplay` y `muted`
+            tryPlayVideo();
+
+            startOverlay.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
                 
-                const suppressSpecificNativeControls = (event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (videoElement.paused) {
-                        tryPlayVideo();
-                    }
-                };
+                videoElement.muted = false;
+                
+                startOverlay.style.display = 'none';
+                clickOverlay.style.display = 'block';
+                
+                tryPlayVideo();
+            });
 
-                videoElement.addEventListener('click', suppressSpecificNativeControls);
-                videoElement.addEventListener('touchend', suppressSpecificNativeControls);
-                videoElement.addEventListener('touchstart', suppressSpecificNativeControls);
-                videoElement.addEventListener('seeking', suppressSpecificNativeControls);
-                videoElement.addEventListener('webkitbeginfullscreen', suppressSpecificNativeControls);
-                videoElement.addEventListener('webkitendfullscreen', suppressSpecificNativeControls);
-                videoElement.addEventListener('fullscreenchange', suppressSpecificNativeControls);
-                videoElement.addEventListener('webkitfullscreenchange', suppressSpecificNativeControls);
+            clickOverlay.addEventListener('click', function(event) {
+                event.preventDefault();
+                event.stopPropagation();
+                window.location.href = 'https://www.cult-order.com/'; 
+            });
 
-                videoElement.addEventListener('contextmenu', function(event) {
-                    event.preventDefault();
-                });
-            }
+            // Evitamos cualquier control nativo, ya que el video no recibe clics
+            videoContainer.addEventListener('click', (event) => {
+                event.stopPropagation();
+                event.preventDefault();
+            }, { capture: true });
         });
     </script>
 </body>
