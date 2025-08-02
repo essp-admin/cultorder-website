@@ -26,7 +26,25 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            pointer-events: none; /* Crucial para que los clics pasen al overlay */
+            /* pointer-events: none; ya no es estrictamente necesario, ya que el overlay siempre está por encima */
+        }
+
+        #start-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000; /* ¡Por encima de todo! */
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para ver el video mudo */
+            cursor: pointer;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 1.5em;
+            text-align: center;
         }
 
         #click-overlay {
@@ -35,87 +53,88 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999; /* ¡Un z-index muy alto para asegurar que esté por encima de todo! */
-            cursor: pointer; /* Mantiene el cursor de clic */
+            z-index: 9999;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
     <div id="video-container">
-        <video id="myVideo" autoplay loop>
+        <video id="myVideo" autoplay muted loop>
             <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
             Tu navegador no soporta el tag de video.
         </video>
-        <div id="click-overlay"></div>
+        <div id="start-overlay">
+            Pulsa para activar el sonido.
+        </div>
+        <div id="click-overlay" style="display: none;"></div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const videoElement = document.getElementById('myVideo');
+            const startOverlay = document.getElementById('start-overlay');
             const clickOverlay = document.getElementById('click-overlay');
 
-            if (videoElement && clickOverlay) {
+            if (videoElement && startOverlay && clickOverlay) {
                 // Función para intentar reproducir el video.
-                // Esta función manejará los intentos de autoplay y los errores.
                 const tryPlayVideo = () => {
                     videoElement.play().catch(error => {
-                        console.warn("Autoplay con sonido bloqueado o fallo al reproducir. El usuario deberá interactuar para escuchar el audio. Error:", error);
-                        // Este error es una advertencia en la consola del navegador si el autoplay con audio está bloqueado.
-                        // La aparición de este error no significa que el código esté mal, sino que el navegador ha bloqueado el autoplay.
+                        console.warn("Fallo al reproducir el video. Error:", error);
                     });
                 };
 
-                // Intenta reproducir al cargar la página
-                tryPlayVideo();
+                // El video ya está configurado con autoplay muted, así que debería empezar a reproducirse solo.
+                // El primer clic en la pantalla es para activar el sonido
+                startOverlay.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    
+                    // 1. Quitar el silencio (unmute) del video
+                    videoElement.muted = false;
+                    
+                    // 2. Ocultar el overlay de inicio
+                    startOverlay.style.display = 'none';
 
-                // Añadimos el evento de clic a la capa superpuesta para ir a la home
-                clickOverlay.addEventListener('click', function(event) {
-                    event.preventDefault(); // Previene cualquier comportamiento predeterminado del clic en el overlay
-                    event.stopPropagation(); // Detiene la propagación del evento
+                    // 3. Mostrar el overlay de clic para la redirección
+                    clickOverlay.style.display = 'block';
 
-                    // *** Asegúrate de que esta URL sea la correcta para tu home ***
-                    window.location.href = 'https://www.cult-order.com/'; 
+                    // 4. Intentar reproducir de nuevo por si se pausó
+                    tryPlayVideo();
                 });
 
-                // **Eventos para intentar suprimir los controles nativos que se activan con ciertas interacciones**
-                // Ahora somos menos agresivos: NO prevenimos 'play'/'pause' directamente en el evento.
-                // Nos centramos en bloquear la aparición de los controles y el modo pantalla completa.
+                // El segundo clic en la pantalla (ahora en el click-overlay) es para ir a la home
+                clickOverlay.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    window.location.href = 'https://www.cult-order.com/'; 
+                });
+                
+                // Mantenemos la lógica de supresión de controles por si acaso
                 const suppressSpecificNativeControls = (event) => {
-                    event.preventDefault(); // Evita el comportamiento predeterminado del navegador
-                    event.stopPropagation(); // Evita que el evento se propague
-
-                    // Si por alguna razón el video se pausa, intentamos reanudarlo inmediatamente.
+                    event.preventDefault();
+                    event.stopPropagation();
                     if (videoElement.paused) {
                         tryPlayVideo();
                     }
                 };
 
-                // Escucha eventos de interacción que puedan mostrar controles o ir a pantalla completa
                 videoElement.addEventListener('click', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchend', suppressSpecificNativeControls);
                 videoElement.addEventListener('touchstart', suppressSpecificNativeControls);
                 videoElement.addEventListener('seeking', suppressSpecificNativeControls);
-                videoElement.addEventListener('webkitbeginfullscreen', suppressSpecificNativeControls); // Específico de Safari iOS
-                videoElement.addEventListener('webkitendfullscreen', suppressSpecificNativeControls);   // Específico de Safari iOS
-                videoElement.addEventListener('fullscreenchange', suppressSpecificNativeControls);      // Para otros navegadores
-                videoElement.addEventListener('webkitfullscreenchange', suppressSpecificNativeControls); // Para otros navegadores
+                videoElement.addEventListener('webkitbeginfullscreen', suppressSpecificNativeControls);
+                videoElement.addEventListener('webkitendfullscreen', suppressSpecificNativeControls);
+                videoElement.addEventListener('fullscreenchange', suppressSpecificNativeControls);
+                videoElement.addEventListener('webkitfullscreenchange', suppressSpecificNativeControls);
 
-                // Evitar menú contextual (clic derecho)
                 videoElement.addEventListener('contextmenu', function(event) {
                     event.preventDefault();
-                });
-
-                // Asegurar que el video intente reproducirse si por alguna razón está pausado después de cargar metadatos
-                videoElement.addEventListener('loadedmetadata', function() {
-                    if (videoElement.paused) {
-                        tryPlayVideo();
-                    }
                 });
             }
         });
     </script>
-
 </body>
 </html>
 
