@@ -5,20 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order - 001</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000;
+        }
+
+        .redirect-text {
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 1.5em;
+            text-align: center;
+        }
+        
+        a.redirect-link {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body class="sacred001-body">
-    <p>Redirigiendo...</p>
-
-    <a id="redirectLink" href="https://hypeddit.com/20lbqz" target="_blank" rel="noopener noreferrer" style="display: none;"></a>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const redirectLink = document.getElementById('redirectLink');
-            if (redirectLink) {
-                // Simula un clic en el enlace para abrirlo en una nueva pestaña
-                redirectLink.click();
-            }
-        });
-    </script>
+    <div class="redirect-text">
+        <a class="redirect-link" href="https://hypeddit.com/20lbqz" target="_blank" rel="noopener noreferrer">
+            Pulsa aquí para iniciar.
+        </a>
+    </div>
 </body>
 </html>
