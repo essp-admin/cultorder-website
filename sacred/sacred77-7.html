@@ -22,13 +22,14 @@
             position: relative;
         }
 
-        #video-background {
+        #myVideo {
             width: 100%;
             height: 100%;
             object-fit: cover;
             position: absolute;
             top: 0;
             left: 0;
+            pointer-events: none; /* ¡Clave para que los clics no lleguen al video! */
         }
 
         #start-overlay {
@@ -64,6 +65,10 @@
 <body>
 
     <div id="video-container">
+        <video id="myVideo" autoplay muted loop playsinline>
+            <source src="https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4" type="video/mp4">
+            Tu navegador no soporta el tag de video.
+        </video>
         <div id="start-overlay">
             Pulsa para activar el sonido.
         </div>
@@ -72,56 +77,35 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const videoContainer = document.getElementById('video-container');
+            const videoElement = document.getElementById('myVideo');
             const startOverlay = document.getElementById('start-overlay');
             const clickOverlay = document.getElementById('click-overlay');
             
-            const videoElement = document.createElement('video');
-            videoElement.id = 'video-background';
-            videoElement.autoplay = true;
-            videoElement.muted = true;
-            videoElement.loop = true;
-            videoElement.playsinline = true;
-            videoElement.src = 'https://essential-part.com/wp-content/uploads/2025/07/Cult-Order-Video-Web.mp4';
-            
-            videoContainer.prepend(videoElement);
-            
-            const tryPlayVideo = () => {
-                videoElement.play().catch(error => {
-                    console.warn("Fallo al reproducir el video. Error:", error);
-                });
-            };
-
-            videoElement.addEventListener('loadedmetadata', () => {
-                tryPlayVideo();
-            });
-            
-            videoElement.addEventListener('pause', () => {
-                tryPlayVideo();
-            });
-
-            startOverlay.addEventListener('click', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
-                
+            // El video se reproduce en silencio automáticamente gracias a 'autoplay' y 'muted'.
+            // El primer clic en la pantalla (en el start-overlay)
+            startOverlay.addEventListener('click', function() {
+                // Al hacer clic, quitamos el silencio
                 videoElement.muted = false;
                 
+                // Ocultamos el overlay de inicio y mostramos el de redirección
                 startOverlay.style.display = 'none';
                 clickOverlay.style.display = 'block';
                 
-                tryPlayVideo();
+                // Intentamos reproducir el video, por si estaba pausado
+                videoElement.play().catch(error => console.error(error));
             });
 
-            clickOverlay.addEventListener('click', function(event) {
-                event.preventDefault();
-                event.stopPropagation();
+            // El segundo clic en la pantalla (en el click-overlay)
+            clickOverlay.addEventListener('click', function() {
                 window.location.href = 'https://www.cult-order.com/'; 
             });
 
-            // Hemos eliminado el código que capturaba todos los clics en el contenedor,
-            // ya que era el que probablemente estaba bloqueando la navegación.
+            // A medida que el video avanza, si por alguna razón se detiene, lo volvemos a intentar
+            videoElement.addEventListener('pause', () => {
+                videoElement.play().catch(error => console.error(error));
+            });
         });
     </script>
 </body>
-</html> 
+</html>
 
