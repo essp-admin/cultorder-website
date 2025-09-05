@@ -45,9 +45,16 @@
             background-color: rgba(0, 0, 0, 0.5);
             cursor: pointer;
             color: white;
-            font-family: Arial, sans-serif;
-            font-size: 1.5em;
+            font-family: 'OCR A Std', monospace; /* Fuente ajustada */
+            font-size: 2em;
             text-align: center;
+        }
+        
+        /* Ajuste de tamaño para móviles */
+        @media (max-width: 768px) {
+            #start-overlay {
+                font-size: 1.2em; /* Tamaño más pequeño en móvil */
+            }
         }
 
         #click-overlay {
