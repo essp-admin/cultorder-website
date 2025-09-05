@@ -1,4 +1,3 @@
-
 /* --- Global Styles --- */
 
 /* Font Import (OCRAStd) */
@@ -33,6 +32,14 @@ body {
 body.index-body { /* Aplicamos esto solo a la página index.html */
     height: 100vh; /* Asegura que el body ocupe el 100% de la altura del viewport */
     /* Las propiedades de display: flex, justify-content, align-items ya están en el body global */
+}
+
+/* Nuevo contenedor para separar las filas de números verticalmente */
+.index-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5vh; /* Ajusta este valor para más o menos separación vertical */
 }
 
 .container {
