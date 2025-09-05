@@ -25,20 +25,21 @@
             cursor: pointer;
             font-family: 'OCRAStd', monospace;
             color: #da0008;
-            font-size: clamp(1.2rem, 2vw, 2.2rem);
+            /* Usamos la misma regla de font-size que en sacred7-3 */
+            font-size: clamp(0.7em, 1.5vw, 1.2em);
             text-align: center;
         }
-        
-        /* Nuevo estilo para centrar el texto correctamente */
+
+        /* Nuevo estilo para centrar el texto correctamente y ajustarlo en los márgenes */
         body p {
-            max-width: 90%; /* Ajusta el ancho máximo del texto */
-            margin: auto; /* Centra el texto horizontalmente */
-            line-height: 1.5; /* Espacio entre líneas para mejor lectura */
+            max-width: 90%;
+            margin: auto;
+            line-height: 1.5;
         }
 
         @media (max-width: 768px) {
             body {
-                font-size: clamp(1.5rem, 5vw, 2rem);
+                font-size: clamp(0.8em, 4vw, 2em); /* Ajuste para móvil */
             }
         }
     </style>
