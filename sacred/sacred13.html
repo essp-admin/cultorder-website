@@ -14,7 +14,6 @@
         }
 
         body {
-            /* Mantenemos tus estilos de body existentes */
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -25,18 +24,32 @@
             cursor: pointer;
             font-family: 'OCRAStd', monospace;
 
-            /* Animación de flasheo de fondo: ahora se ejecuta una vez al cargar la página */
+            /* Animación de flasheo de fondo inicial: dura 1 segundo y se mantiene al final */
             background-color: #0c0b0b; /* Color inicial del fondo */
-            animation: background-flash 1s forwards; /* La animación dura 1 segundo y se mantiene al final (`forwards`) */
+            animation: background-flash-initial 1s forwards; 
         }
 
-        /* Definición de la animación del flasheo de fondo */
-        @keyframes background-flash {
+        /* Definición de la animación del flasheo de fondo inicial */
+        @keyframes background-flash-initial {
             0% { background-color: #0c0b0b; } /* Negro */
             33% { background-color: #da0008; } /* Rojo Cult Order */
             66% { background-color: #ffffff; } /* Blanco */
             100% { background-color: #0c0b0b; } /* Vuelve a Negro */
         }
+
+        /* **NUEVO: Clase para el flasheo de repetición** */
+        body.flash-again {
+            animation: background-flash-repeat 1s forwards; /* Dura 1 segundo y se mantiene al final */
+        }
+
+        /* Definición de la animación del flasheo de repetición */
+        @keyframes background-flash-repeat {
+            0% { background-color: #0c0b0b; } /* Negro */
+            33% { background-color: #da0008; } /* Rojo Cult Order */
+            66% { background-color: #ffffff; } /* Blanco */
+            100% { background-color: #0c0b0b; } /* Vuelve a Negro */
+        }
+
 
         .glitch-text {
             color: #da0008;
@@ -63,43 +76,4 @@
                 transform: translate(3px, -3px);
                 text-shadow: 
                     -2px 2px 0 #da0008,
-                    2px -2px 0 #fcfcfc;
-            }
-            50% {
-                transform: translate(-3px, 3px);
-                text-shadow: 
-                    2px -2px 0 #0c0b0b,
-                    -2px 2px 0 #da0008;
-            }
-            75% {
-                transform: translate(-2px, -2px);
-                text-shadow: 
-                    -2px 2px 0 #fcfcfc,
-                    2px -2px 0 #0c0b0b;
-            }
-            100% {
-                transform: translate(0, 0);
-                text-shadow: 
-                    2px 2px 0 #da0008,
-                    -2px -2px 0 #fcfcfc;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .glitch-text {
-                font-size: clamp(0.8em, 4vw, 2em);
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="glitch-text">
-        <p>Consciousness begins with you, and everything expands from there</p>
-    </div>
-    <script>
-        document.body.addEventListener('click', function() {
-            window.location.href = 'https://www.cult-order.com/';
-        });
-    </script>
-</body>
-</html>
+                    2px -2px 0 #fcfcf
