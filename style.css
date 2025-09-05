@@ -33,7 +33,7 @@ body.index-body {
     flex-direction: column; /* Apilamos las filas verticalmente */
     justify-content: center; /* Centramos las filas verticalmente */
     align-items: center; /* Centramos las filas horizontalmente */
-    gap: 8vh; /* Ajusta este valor para la separación vertical (ej: 8vh para la imagen 2) */
+    gap: 5vh; /* Ajusta este valor para la separación vertical (ej: 8vh para la imagen 2) */
 }
 
 .container {
