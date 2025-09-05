@@ -28,15 +28,12 @@ body {
 }
 
 /* --- Index.html specific styles --- */
-/* Aseguramos que el body de index.html ocupe toda la altura para que el centrado funcione */
-body.index-body { /* Aplicamos esto solo a la página index.html */
-    height: 100vh; /* Asegura que el body ocupe el 100% de la altura del viewport */
-    /* Las propiedades de display: flex, justify-content, align-items ya están en el body global */
-    
-    /* --- CÓDIGO CORREGIDO AQUÍ --- */
-    flex-direction: column; /* Apila las filas de números verticalmente */
-    gap: 8vh; /* Ajusta este valor para la separación vertical entre las dos filas (ej: 8vh para la imagen 2) */
-    /* --- FIN DEL CÓDIGO CORREGIDO --- */
+/* Añadimos un contenedor principal para apilar las dos filas verticalmente */
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8vh; /* Ajusta este valor para más o menos separación vertical */
 }
 
 .container {
@@ -159,6 +156,4 @@ body.sacred7-3-body {
 /* Media query for smaller screens (e.g., mobile) for hidden-message */
 @media (max-width: 768px) {
     .hidden-message {
-        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html */
-    }
-}
+        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html
