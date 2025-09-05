@@ -29,11 +29,11 @@ body {
 
 /* --- Index.html specific styles --- */
 body.index-body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5vh; /* <-- CAMBIA ESTE VALOR para ajustarlo a tu gusto */
+    display: flex; /* Hacemos que el body sea un contenedor flexbox */
+    flex-direction: column; /* Apilamos las filas verticalmente */
+    justify-content: center; /* Centramos las filas verticalmente */
+    align-items: center; /* Centramos las filas horizontalmente */
+    gap: 8vh; /* Ajusta este valor para la separación vertical (ej: 8vh para la imagen 2) */
 }
 
 .container {
