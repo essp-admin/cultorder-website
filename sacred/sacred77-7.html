@@ -6,6 +6,13 @@
     <title>Cult Order - Sacred 77-7</title>
     <link rel="stylesheet" href="../style.css">
     <style>
+        @font-face {
+            font-family: 'OCRAStd';
+            src: url('../assets/fonts/OCRAStd.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         body {
             margin: 0;
             overflow: hidden;
@@ -14,7 +21,6 @@
             align-items: center;
             min-height: 100vh;
             background-color: #000;
-            font-family: 'OCR A Std', monospace;
         }
 
         #video-container {
@@ -46,14 +52,14 @@
             background-color: rgba(0, 0, 0, 0.5);
             cursor: pointer;
             color: white;
-            font-family: 'OCR A Std', monospace;
-            font-size: 2em;
+            font-family: 'OCRAStd', monospace; /* Fuente ajustada */
+            font-size: clamp(1rem, 2vw, 2em); /* Tamaño ajustado para ser más pequeño */
             text-align: center;
         }
 
         @media (max-width: 768px) {
             #start-overlay {
-                font-size: 1.2em;
+                font-size: clamp(1em, 3vw, 1.5em); /* Ajuste de tamaño para móviles */
             }
         }
 
