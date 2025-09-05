@@ -14,7 +14,7 @@
         }
 
         body {
-            background-color: #0c0b0b;
+            /* Mantenemos tus estilos de body existentes */
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -23,23 +23,33 @@
             align-items: center;
             height: 100vh;
             cursor: pointer;
-            font-family: 'OCRAStd', monospace; /* Aplicamos la fuente */
+            font-family: 'OCRAStd', monospace;
+
+            /* **NUEVO: Animación de flasheo de fondo** */
+            background-color: #0c0b0b; /* Color inicial del fondo */
+            animation: background-flash 0.8s infinite alternate; /* 0.8s para un flasheo rápido, `alternate` para que vaya y vuelva suavemente */
+        }
+
+        /* Definición de la animación del flasheo de fondo */
+        @keyframes background-flash {
+            0% { background-color: #0c0b0b; } /* Negro */
+            33% { background-color: #da0008; } /* Rojo Cult Order */
+            66% { background-color: #ffffff; } /* Blanco */
+            100% { background-color: #0c0b0b; } /* Vuelve a Negro */
         }
 
         .glitch-text {
             color: #da0008;
-            /* Usamos la misma regla de font-size que en sacred3-6 y sacred7-3 */
             font-size: clamp(0.7em, 1.5vw, 1.2em);
             font-weight: bold;
             text-align: center;
-            animation: glitch 1s infinite;
+            animation: glitch 1s infinite; /* Mantener la animación de texto glitch */
         }
         
-        /* Nuevo estilo para centrar el texto correctamente y ajustarlo en los márgenes */
         .glitch-text p {
-            max-width: 90%; /* Ajusta el ancho máximo del texto */
-            margin: auto; /* Centra el texto horizontalmente */
-            line-height: 1.5; /* Espacio entre líneas para mejor lectura */
+            max-width: 90%;
+            margin: auto;
+            line-height: 1.5;
         }
 
         @keyframes glitch {
@@ -77,7 +87,7 @@
 
         @media (max-width: 768px) {
             .glitch-text {
-                font-size: clamp(0.8em, 4vw, 2em); /* Ajuste para móvil */
+                font-size: clamp(0.8em, 4vw, 2em);
             }
         }
     </style>
