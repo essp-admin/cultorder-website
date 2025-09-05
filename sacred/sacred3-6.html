@@ -12,6 +12,7 @@
             font-weight: normal;
             font-style: normal;
         }
+
         body {
             background-color: #0c0b0b;
             margin: 0;
@@ -22,51 +23,22 @@
             align-items: center;
             height: 100vh;
             cursor: pointer;
-            font-family: 'OCRAStd', monospace;
-        }
-        .glitch-text {
-            color: #da0008;
-            font-size: clamp(1.2rem, 5vw, 2rem);
-            font-weight: bold;
+            font-family: 'OCRAStd', monospace; /* Aplicamos la fuente */
+            color: #da0008; /* Color Cult Order Red */
+            font-size: clamp(1.2rem, 2vw, 2.2rem); /* Ajustamos el tamaño de la fuente */
             text-align: center;
-            animation: glitch 1s infinite;
+            padding: 0 20px; /* Añadimos padding para el texto en los laterales */
         }
-        @keyframes glitch {
-            0% {
-                transform: translate(0, 0);
-                text-shadow: 
-                    2px 2px 0 #fcfcfc,
-                    -2px -2px 0 #0c0b0b;
-            }
-            25% {
-                transform: translate(3px, -3px);
-                text-shadow: 
-                    -2px 2px 0 #da0008,
-                    2px -2px 0 #fcfcfc;
-            }
-            50% {
-                transform: translate(-3px, 3px);
-                text-shadow: 
-                    2px -2px 0 #0c0b0b,
-                    -2px 2px 0 #da0008;
-            }
-            75% {
-                transform: translate(-2px, -2px);
-                text-shadow: 
-                    -2px 2px 0 #fcfcfc,
-                    2px -2px 0 #0c0b0b;
-            }
-            100% {
-                transform: translate(0, 0);
-                text-shadow: 
-                    2px 2px 0 #da0008,
-                    -2px -2px 0 #fcfcfc;
+
+        @media (max-width: 768px) {
+            body {
+                font-size: clamp(1.5rem, 5vw, 2rem);
             }
         }
     </style>
 </head>
 <body>
-    <div class="glitch-text">Find the truth within you</div>
+    <p>None are lost, only distant from the light.</p>
     <script>
         document.body.addEventListener('click', function() {
             window.location.href = 'https://www.cult-order.com/';
