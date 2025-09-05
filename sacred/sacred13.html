@@ -25,9 +25,9 @@
             cursor: pointer;
             font-family: 'OCRAStd', monospace;
 
-            /* **NUEVO: Animación de flasheo de fondo** */
+            /* Animación de flasheo de fondo: ahora se ejecuta una vez al cargar la página */
             background-color: #0c0b0b; /* Color inicial del fondo */
-            animation: background-flash 0.8s infinite alternate; /* 0.8s para un flasheo rápido, `alternate` para que vaya y vuelva suavemente */
+            animation: background-flash 1s forwards; /* La animación dura 1 segundo y se mantiene al final (`forwards`) */
         }
 
         /* Definición de la animación del flasheo de fondo */
