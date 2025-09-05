@@ -23,11 +23,17 @@
             align-items: center;
             height: 100vh;
             cursor: pointer;
-            font-family: 'OCRAStd', monospace; /* Aplicamos la fuente */
-            color: #da0008; /* Color Cult Order Red */
-            font-size: clamp(1.2rem, 2vw, 2.2rem); /* Ajustamos el tamaño de la fuente */
+            font-family: 'OCRAStd', monospace;
+            color: #da0008;
+            font-size: clamp(1.2rem, 2vw, 2.2rem);
             text-align: center;
-            padding: 0 20px; /* Añadimos padding para el texto en los laterales */
+        }
+        
+        /* Nuevo estilo para centrar el texto correctamente */
+        body p {
+            max-width: 90%; /* Ajusta el ancho máximo del texto */
+            margin: auto; /* Centra el texto horizontalmente */
+            line-height: 1.5; /* Espacio entre líneas para mejor lectura */
         }
 
         @media (max-width: 768px) {
