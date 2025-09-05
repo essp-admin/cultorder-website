@@ -58,6 +58,16 @@
             padding: 0 20px;
         }
 
+        /* ESTILO PARA EL PÁRRAFO DENTRO DEL OVERLAY */
+        #start-overlay p {
+            max-width: 80%; /* Mantener el ancho máximo para el espaciado lateral */
+            margin: auto; /* Centrar horizontalmente */
+            display: flex; /* Añadir flex para centrado vertical */
+            align-items: center; /* Centrar verticalmente */
+            justify-content: center; /* Centrar horizontalmente si el texto es corto */
+            height: 100%; /* Ocupar toda la altura disponible para el centrado vertical */
+        }
+
         @media (max-width: 768px) {
             #start-overlay {
                 font-size: clamp(1em, 3vw, 1.5em);
@@ -84,7 +94,7 @@
             Tu navegador no soporta el tag de video.
         </video>
         <div id="start-overlay">
-            <p style="max-width: 80%; margin: auto;">The truth is the key. Seek it with pure intent.</p>
+            <p>The truth is the key. Seek it with pure intent.</p>
         </div>
         <div id="click-overlay"></div>
     </div>
