@@ -2,10 +2,10 @@
 
 /* Font Import (OCRAStd) */
 @font-face {
-  font-family: 'OCRAStd';
-  src: url('assets/fonts/OCRAStd.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'OCRAStd';
+    src: url('assets/fonts/OCRAStd.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 /* Base Body & HTML Styles (Defaults for all pages, overwritten by specific classes) */
@@ -22,48 +22,48 @@ html, body {
 
 /* Flexbox centering for main content (used by index.html by default) */
 body {
-  display: flex;
-  justify-content: center; /* Centrado horizontal */
-  align-items: center;   /* Centrado vertical */
+    display: flex;
+    justify-content: center; /* Centrado horizontal */
+    align-items: center;    /* Centrado vertical */
 }
 
 /* --- Index.html specific styles --- */
 body.index-body {
-    display: flex; /* Hacemos que el body sea un contenedor flexbox */
-    flex-direction: column; /* Apilamos las filas verticalmente */
-    justify-content: center; /* Centramos las filas verticalmente */
-    align-items: center; /* Centramos las filas horizontalmente */
-    gap: 8vh; /* Ajusta este valor para la separación vertical (ej: 8vh para la imagen 2) */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vh; /* <-- Volviendo al valor original para que se separen las filas */
 }
 
 .container {
-  display: flex;
-  flex-direction: row; /* Números en horizontal */
-  gap: 4vw; /* Espacio entre los números por defecto (desktop) */
-  flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
+    display: flex;
+    flex-direction: row; /* Números en horizontal */
+    gap: 4vw; /* Espacio entre los números por defecto (desktop) */
+    flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
 }
 
 /* Styles for the number links on index.html */
 a.sacred-number {
-  text-decoration: none;
-  font-size: 1.5vw; /* Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
-  color: #da0008; /* Cult Order Red */
-  transition: 0.3s ease;
+    text-decoration: none;
+    font-size: 1.5vw; /* Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
+    color: #da0008; /* Cult Order Red */
+    transition: 0.3s ease;
 }
 
 a.sacred-number:hover {
-  opacity: 0.5;
-  cursor: crosshair;
+    opacity: 0.5;
+    cursor: crosshair;
 }
 
 /* Media query for mobile (index.html) - Ajusta el gap para separar los números */
 @media (max-width: 768px) {
-  a.sacred-number {
-    font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html, que ya funciona */
-  }
-  .container {
-    gap: 8vw; /* <-- AJUSTADO AQUÍ: Mayor espacio entre los números en móvil. Prueba con 8vw, 10vw, etc. */
-  }
+    a.sacred-number {
+        font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html, que ya funciona */
+    }
+    .container {
+        gap: 8vw; /* <-- AJUSTADO AQUÍ: Mayor espacio entre los números en móvil. Prueba con 8vw, 10vw, etc. */
+    }
 }
 
 /* --- Sacred Pages Specific Styles --- */
@@ -156,4 +156,6 @@ body.sacred7-3-body {
 /* Media query for smaller screens (e.g., mobile) for hidden-message */
 @media (max-width: 768px) {
     .hidden-message {
-        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html
+        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html */
+    }
+}
