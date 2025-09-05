@@ -6,6 +6,12 @@
     <title>Cult Order - 3.6</title>
     <link rel="stylesheet" href="../style.css">
     <style>
+        @font-face {
+            font-family: 'OCRAStd';
+            src: url('../assets/fonts/OCRAStd.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
         body {
             background-color: #0c0b0b;
             margin: 0;
@@ -16,9 +22,8 @@
             align-items: center;
             height: 100vh;
             cursor: pointer;
-            font-family: 'OCR A Std', monospace;
+            font-family: 'OCRAStd', monospace;
         }
-
         .glitch-text {
             color: #da0008;
             font-size: clamp(1.2rem, 5vw, 2rem);
@@ -26,7 +31,6 @@
             text-align: center;
             animation: glitch 1s infinite;
         }
-
         @keyframes glitch {
             0% {
                 transform: translate(0, 0);
