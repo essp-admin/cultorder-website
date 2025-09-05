@@ -19,13 +19,15 @@
             cursor: pointer;
             font-family: 'OCR A Std', monospace;
         }
+
         .glitch-text {
             color: #da0008;
-            font-size: 10vw; /* <-- Cambiado a una unidad relativa para que se ajuste */
+            font-size: clamp(1.2rem, 5vw, 2rem); /* <-- Usamos CLAMP para un tamaño responsive */
             font-weight: bold;
             text-align: center;
             animation: glitch 1s infinite;
         }
+
         @keyframes glitch {
             0% {
                 transform: translate(0, 0);
@@ -56,6 +58,14 @@
                 text-shadow: 
                     2px 2px 0 #da0008,
                     -2px -2px 0 #fcfcfc;
+            }
+        }
+
+        /* Media query para móviles, si la fuente aún no se aplica correctamente */
+        @media (max-width: 768px) {
+            .glitch-text {
+                font-family: 'OCR A Std', monospace;
+                font-size: clamp(1rem, 5vw, 1.5rem);
             }
         }
     </style>
