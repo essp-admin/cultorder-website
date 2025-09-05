@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cult Order - 13</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=OCR+A+Std&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0c0b0b;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            cursor: pointer;
+            font-family: 'OCR A Std', monospace;
+        }
+        .glitch-text {
+            color: #da0008;
+            font-size: 5em;
+            font-weight: bold;
+            text-align: center;
+            animation: glitch 1s infinite;
+        }
+        @keyframes glitch {
+            0% {
+                transform: translate(0, 0);
+                text-shadow: 
+                    2px 2px 0 #fcfcfc,
+                    -2px -2px 0 #0c0b0b;
+            }
+            25% {
+                transform: translate(3px, -3px);
+                text-shadow: 
+                    -2px 2px 0 #da0008,
+                    2px -2px 0 #fcfcfc;
+            }
+            50% {
+                transform: translate(-3px, 3px);
+                text-shadow: 
+                    2px -2px 0 #0c0b0b,
+                    -2px 2px 0 #da0008;
+            }
+            75% {
+                transform: translate(-2px, -2px);
+                text-shadow: 
+                    -2px 2px 0 #fcfcfc,
+                    2px -2px 0 #0c0b0b;
+            }
+            100% {
+                transform: translate(0, 0);
+                text-shadow: 
+                    2px 2px 0 #da0008,
+                    -2px -2px 0 #fcfcfc;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-text">ERROR</div>
+    <script>
+        document.body.addEventListener('click', function() {
+            window.location.href = 'https://www.cult-order.com/';
+        });
+    </script>
+</body>
+</html>
