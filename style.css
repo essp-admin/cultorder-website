@@ -14,17 +14,17 @@ html, body {
     padding: 0;
     width: 100%;
     height: 100%;
-    overflow: hidden; /* Prevent scroll on full-screen pages */
-    font-family: 'OCRAStd', monospace; /* Apply global font */
-    color: white; /* Default text color */
-    background-color: #0c0b0b; /* Default background: absolute black */
+    overflow: hidden;
+    font-family: 'OCRAStd', monospace;
+    color: white;
+    background-color: #0c0b0b;
 }
 
 /* Flexbox centering for main content (used by index.html by default) */
 body {
     display: flex;
-    justify-content: center; /* Centrado horizontal */
-    align-items: center;    /* Centrado vertical */
+    justify-content: center;
+    align-items: center;
 }
 
 /* --- Index.html specific styles --- */
@@ -33,21 +33,21 @@ body.index-body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5vh; /* <-- Volviendo al valor original para que se separen las filas */
+    gap: 5vh;
 }
 
 .container {
     display: flex;
-    flex-direction: row; /* Números en horizontal */
-    gap: 4vw; /* Espacio entre los números por defecto (desktop) */
-    flex-wrap: wrap; /* Permite que los elementos salten de línea en pantallas pequeñas */
+    flex-direction: row;
+    gap: 4vw;
+    flex-wrap: wrap;
 }
 
 /* Styles for the number links on index.html */
 a.sacred-number {
     text-decoration: none;
-    font-size: 1.5vw; /* Ajuste para que sea PEQUEÑO en DESKTOP, similar a 7.3 */
-    color: #da0008; /* Cult Order Red */
+    font-size: 1.5vw;
+    color: #da0008;
     transition: 0.3s ease;
 }
 
@@ -59,10 +59,10 @@ a.sacred-number:hover {
 /* Media query for mobile (index.html) - Ajusta el gap para separar los números */
 @media (max-width: 768px) {
     a.sacred-number {
-        font-size: 5vw; /* Mantiene el tamaño grande para MÓVIL en index.html, que ya funciona */
+        font-size: 5vw;
     }
     .container {
-        gap: 8vw; /* <-- AJUSTADO AQUÍ: Mayor espacio entre los números en móvil. Prueba con 8vw, 10vw, etc. */
+        gap: 8vw;
     }
 }
 
@@ -70,26 +70,26 @@ a.sacred-number:hover {
 
 /* sacred001.html (Redirection page - text hidden/minimal) */
 body.sacred001-body {
-    background-color: #0c0b0b; /* Ensure black background */
-    color: transparent; /* Makes text invisible, but still present for screen readers */
+    background-color: #0c0b0b;
+    color: transparent;
 }
 
 /* sacred30.html (Red background, logo/isotipo interaction) */
 body.sacred30-body {
-    background-color: #da0008; /* Full screen Cult Order Red */
+    background-color: #da0008;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden; /* Hide scrollbars */
+    overflow: hidden;
 }
 
 /* SVG image sizing for sacred30.html - Ajustado para ser más pequeño */
 #logo-svg, #isotipo-svg {
     cursor: pointer;
-    max-width: 50vw; /* Máximo 50% del ancho del viewport en desktop */
-    max-height: 50vh; /* Máximo 50% de la altura del viewport en desktop */
-    width: auto; /* Mantener relación de aspecto */
-    height: auto; /* Mantener relación de aspecto */
+    max-width: 50vw;
+    max-height: 50vh;
+    width: auto;
+    height: auto;
     display: block;
     margin: auto;
 }
@@ -97,11 +97,10 @@ body.sacred30-body {
 /* Media query for smaller screens (e.g., mobile) for logo/isotipo */
 @media (max-width: 768px) {
     #logo-svg, #isotipo-svg {
-        max-width: 80vw; /* Un poco más grande en móvil, pero aún controlado */
+        max-width: 80vw;
         max-height: 80vh;
     }
 }
-
 
 /* sacred77-7.html (Video embed page) */
 body.sacred77-7-body {
@@ -114,32 +113,32 @@ body.sacred77-7-body {
 
 .video-container {
     position: relative;
-    width: 100vw; /* Ocupar todo el ancho de la ventana */
-    height: 100vh; /* Ocupar toda la altura de la ventana */
+    width: 100vw;
+    height: 100vh;
     overflow: hidden;
-    display: flex; /* Para centrar el video dentro del contenedor */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.video-container video { /* Cambiado de iframe a video */
-    min-width: 100%; /* Asegura que cubra el ancho mínimo */
-    min-height: 100%; /* Asegura que cubra el alto mínimo */
+.video-container video {
+    min-width: 100%;
+    min-height: 100%;
     width: auto;
     height: auto;
-    position: absolute; /* Para que se posicione y cubra */
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Centrar el video */
-    object-fit: cover; /* Recortar el video para que cubra todo el espacio sin distorsión */
+    transform: translate(-50%, -50%);
+    object-fit: cover;
     border: 0;
 }
 
 
 /* sacred7-3.html (Hidden message page) */
 body.sacred7-3-body {
-    background-color: #0c0b0b; /* Absolute black as requested */
-    display: flex; /* For centering the text */
+    background-color: #0c0b0b;
+    display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
@@ -147,8 +146,8 @@ body.sacred7-3-body {
 
 .hidden-message {
     cursor: pointer;
-    font-size: clamp(0.7em, 1.5vw, 1.2em); /* ESTE SE MANTIENE PEQUEÑO para sacred7-3.html */
-    color: #da0008; /* Texto en rojo Cult Order */
+    font-size: clamp(0.7em, 1.5vw, 1.2em);
+    color: #da0008;
     text-align: center;
     padding: 20px;
     user-select: none;
@@ -156,6 +155,21 @@ body.sacred7-3-body {
 /* Media query for smaller screens (e.g., mobile) for hidden-message */
 @media (max-width: 768px) {
     .hidden-message {
-        font-size: clamp(0.8em, 4vw, 2em); /* ESTE SE MANTIENE PEQUEÑO para móvil en sacred7-3.html */
+        font-size: clamp(0.8em, 4vw, 2em);
     }
+}
+
+/* --- Glitch effect for sacred13.html --- */
+.glitch-13 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/img/glitch-image.webp");
+    background-size: cover;
+    opacity: 0;
+    transition: opacity 0.05s ease-in-out;
+    pointer-events: none;
+    z-index: 100;
 }
