@@ -105,30 +105,3 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-
-    <div class="glitch-13"></div>
-
-    <div class="content">
-        <h1>The truth is the key. Seek it with pure intent.</h1>
-        </div>
-
-    <script>
-        // Selecciona el elemento de la capa de glitch
-        const glitchEffect = document.querySelector('.glitch-13');
-
-        // Función que activa y desactiva el efecto
-        function triggerGlitch() {
-            // Muestra la capa de glitch instantáneamente
-            glitchEffect.style.opacity = '1';
-
-            // Oculta el glitch después de 200 milisegundos (0.2 segundos)
-            setTimeout(() => {
-                glitchEffect.style.opacity = '0';
-            }, 200);
-        }
-
-        // Llama a la función al cargar la página.
-        window.addEventListener('load', triggerGlitch);
-    </script>
-</body>
-</html>
