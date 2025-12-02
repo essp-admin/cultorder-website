@@ -32,7 +32,6 @@
         /* --- ESTILOS DEL JUEGO DE SECUENCIA --- */
 
         .game-state {
-            /* Oculta o muestra todo el contenido del juego */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -46,7 +45,6 @@
         }
 
         .sacred-button {
-            /* TAMAÑO REDUCIDO */
             width: 50px; 
             height: 50px;
             line-height: 50px;
@@ -74,11 +72,22 @@
 
         /* --- ESTILOS DE LA RECOMPENSA (pantalla de frase) --- */
         
+        #reward-screen {
+            /* NUEVAS REGLAS para centrar el contenido */
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            /* Fin de NUEVAS REGLAS */
+            cursor: pointer; 
+        }
+
         #reward-message {
             max-width: 90%;
             line-height: 1.5;
-            /* El cursor cambiará a pointer cuando la frase esté visible */
-            cursor: pointer; 
+            text-align: center; /* Asegura el centrado del texto multilínea */
+            padding: 0 5%;
         }
 
     </style>
@@ -108,7 +117,6 @@
     <script>
         // Lógica del Juego de Secuencia y del Flujo de Recompensa
         document.addEventListener('DOMContentLoaded', function() {
-            // CAMBIO DE DIFICULTAD: Secuencia más larga y con repetición.
             const sequence = [7, 3, 1, 5, 3]; 
             let playerSequence = [];
             let isDisplaying = false;
@@ -140,7 +148,7 @@
                 // Ocultar juego y mostrar pantalla de recompensa
                 gameState.style.display = 'none';
                 rewardScreen.style.display = 'flex';
-                document.body.style.cursor = 'pointer'; // Hacemos la pantalla clicable
+                document.body.style.cursor = 'pointer';
 
                 // Mostrar la frase correspondiente
                 rewardMessage.textContent = REWARD_PHRASES[currentRewardStep - 1];
