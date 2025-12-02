@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cult Order - 9.11</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        @font-face {
+            font-family: 'OCRAStd';
+            src: url('../assets/fonts/OCRAStd.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background-color: #0c0b0b;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            cursor: pointer;
+            font-family: 'OCRAStd', monospace;
+            color: #da0008;
+            /* Usamos la misma regla de font-size que en sacred7-3 */
+            font-size: clamp(0.7em, 1.5vw, 1.2em);
+            text-align: center;
+        }
+
+        /* Nuevo estilo para centrar el texto correctamente y ajustarlo en los márgenes */
+        body p {
+            max-width: 90%;
+            margin: auto;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                font-size: clamp(0.8em, 4vw, 2em); /* Ajuste para móvil */
+            }
+        }
+    </style>
+</head>
+<body>
+    <p>Before the veil is lifted, the pattern reveals itself to the patient eye.</p>
+    <script>
+        document.body.addEventListener('click', function() {
+            window.location.href = 'https://www.cult-order.com/';
+        });
+    </script>
+</body>
+</html>
