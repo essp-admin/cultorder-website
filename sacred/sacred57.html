@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cult Order - 57</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Estilos base (Negro, Centrado, Tipografía) */
+        body {
+            background-color: #000;
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Apila el texto de estado y el juego */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'OCRAStd', monospace;
+            color: #da0008; /* Rojo */
+            text-align: center;
+            font-size: clamp(0.7em, 1.5vw, 1.2em);
+            user-select: none; /* Evita seleccionar el texto del juego */
+        }
+
+        /* Estilo para los botones (Sacred Numbers) */
+        .game-buttons {
+            display: flex;
+            gap: 20px; /* Espacio entre números */
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .sacred-button {
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            border: 1px solid #da0008;
+            background-color: transparent;
+            color: #da0008;
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        /* Estado de "Glitch" o Fallo */
+        .glitch-text {
+            color: #da0008;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .glitch-text.visible {
+            opacity: 1;
+        }
+
+        /* Efecto de parpadeo (al hacer hover o durante la secuencia) */
+        .sacred-button:hover:not(.active) {
+            background-color: rgba(218, 0, 8, 0.2);
+        }
+
+        .sacred-button.active {
+            background-color: #da0008;
+            color: #000;
+            animation: pulse 0.3s ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div id="status-message">
+        //INITIATE SEQUENCE: ENTER THE RITUAL ORDER
+    </div>
+
+    <div class="game-buttons" id="game-buttons">
+        <div class="sacred-button" id="btn-1">1</div>
+        <div class="sacred-button" id="btn-3">3</div>
+        <div class="sacred-button" id="btn-5">5</div>
+        <div class="sacred-button" id="btn-7">7</div>
+    </div>
+    
+    <div id="result-message" class="glitch-text"></div>
+
+
+    <script>
+        // Lógica del Juego de Secuencia
+        document.addEventListener('DOMContentLoaded', function() {
+            const sequence = [1, 3, 5, 7]; // Secuencia maestra (1, 3, 5, 7)
+            let playerSequence = [];
+            let isDisplaying = false;
+            const buttons = document.querySelectorAll('.sacred-button');
+            const statusMessage = document.getElementById('status-message');
+            const resultMessage = document.getElementById('result-message');
+
+            // --- 1. FUNCIÓN PARA MOSTRAR LA SECUENCIA AL USUARIO ---
+            async function displaySequence() {
+                isDisplaying = true;
+                statusMessage.textContent = "//MEMORIZE...";
+
+                for (let i = 0; i < sequence.length; i++) {
+                    const buttonId = `btn-${sequence[i]}`;
+                    const button = document.getElementById(buttonId);
+
+                    button.classList.add('active');
+                    await new Promise(resolve => setTimeout(resolve, 500)); // Activo 0.5s
+                    button.classList.remove('active');
+                    await new Promise(resolve => setTimeout(resolve, 200)); // Pausa 0.2s
+                }
+
+                isDisplaying = false;
+                playerSequence = [];
+                statusMessage.textContent = "//INPUT REQUIRED: REPEAT THE ORDER";
+            }
+
+            // --- 2. FUNCIÓN PARA MANEJAR EL CLIC DEL JUGADOR ---
+            function handleInput(value) {
+                if (isDisplaying) return; // Ignora clics mientras se muestra la secuencia
+
+                playerSequence.push(value);
+                const currentStep = playerSequence.length - 1;
+                const clickedButton = document.getElementById(`btn-${value}`);
+
+                // Efecto de feedback al hacer clic
+                clickedButton.classList.add('active');
+                setTimeout(() => {
+                    clickedButton.classList.remove('active');
+                }, 100);
+
+                // Comprobar si el input es correcto hasta ahora
+                if (value !== sequence[currentStep]) {
+                    // Fallo
+                    statusMessage.textContent = "//ACCESS DENIED. RITUAL FAILURE.";
+                    resultMessage.textContent = "SYSTEM ERROR. RESTARTING SEQUENCE...";
+                    resultMessage.classList.add('visible');
+                    setTimeout(() => {
+                        resultMessage.classList.remove('visible');
+                        statusMessage.textContent = "//INITIATE SEQUENCE: ENTER THE RITUAL ORDER";
+                        setTimeout(displaySequence, 1500);
+                    }, 2000);
+                    return;
+                }
+
+                // Si la secuencia es correcta y ha terminado de ingresar
+                if (playerSequence.length === sequence.length) {
+                    // Éxito
+                    statusMessage.textContent = "//SEQUENCE ASCENDED. ACCESS GRANTED.";
+                    resultMessage.textContent = "The veil is lifted. What you seek is not a place, but a key.";
+                    resultMessage.classList.add('visible');
+                    
+                    // Redirecciona a la URL de recompensa después de 3 segundos
+                    setTimeout(() => {
+                        window.location.href = 'https://www.cult-order.com/'; 
+                    }, 3000);
+                }
+            }
+
+            // Añadir listeners a los botones
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // El valor es el número dentro del botón
+                    const value = parseInt(button.textContent); 
+                    handleInput(value);
+                });
+            });
+
+            // --- 3. INICIAR EL JUEGO ---
+            // Inicia la secuencia después de un pequeño retraso
+            setTimeout(displaySequence, 2000); 
+
+        });
+    </script>
+</body>
+</html>
