@@ -8,7 +8,7 @@
     font-style: normal;
 }
 
-/* Base Body & HTML Styles (Defaults for all pages, overwritten by specific classes) */
+/* Base Body & HTML Styles */
 html, body {
     margin: 0;
     padding: 0;
@@ -20,7 +20,7 @@ html, body {
     background-color: #0c0b0b;
 }
 
-/* Flexbox centering for main content (used by index.html by default) */
+/* Flexbox centering for main content */
 body {
     display: flex;
     justify-content: center;
@@ -44,9 +44,10 @@ body.index-body {
 }
 
 /* Styles for the number links on index.html */
+/* 🔽 ÚNICO AJUSTE: 1.5vw → 1.35vw */
 a.sacred-number {
     text-decoration: none;
-    font-size: 1.5vw;
+    font-size: 1.35vw;
     color: #da0008;
     transition: 0.3s ease;
 }
@@ -56,7 +57,7 @@ a.sacred-number:hover {
     cursor: crosshair;
 }
 
-/* Media query for mobile (index.html) - Ajusta el gap para separar los números */
+/* Mobile */
 @media (max-width: 768px) {
     a.sacred-number {
         font-size: 5vw;
@@ -68,13 +69,13 @@ a.sacred-number:hover {
 
 /* --- Sacred Pages Specific Styles --- */
 
-/* sacred001.html (Redirection page - text hidden/minimal) */
+/* sacred001.html */
 body.sacred001-body {
     background-color: #0c0b0b;
     color: transparent;
 }
 
-/* sacred30.html (Red background, logo/isotipo interaction) */
+/* sacred30.html */
 body.sacred30-body {
     background-color: #da0008;
     display: flex;
@@ -83,7 +84,7 @@ body.sacred30-body {
     overflow: hidden;
 }
 
-/* SVG image sizing for sacred30.html - Ajustado para ser más pequeño */
+/* SVG image sizing */
 #logo-svg, #isotipo-svg {
     cursor: pointer;
     max-width: 50vw;
@@ -94,7 +95,6 @@ body.sacred30-body {
     margin: auto;
 }
 
-/* Media query for smaller screens (e.g., mobile) for logo/isotipo */
 @media (max-width: 768px) {
     #logo-svg, #isotipo-svg {
         max-width: 80vw;
@@ -102,7 +102,7 @@ body.sacred30-body {
     }
 }
 
-/* sacred77-7.html (Video embed page) */
+/* sacred77-7.html */
 body.sacred77-7-body {
     background-color: black;
     display: flex;
@@ -134,8 +134,7 @@ body.sacred77-7-body {
     border: 0;
 }
 
-
-/* sacred7-3.html (Hidden message page) */
+/* sacred7-3.html */
 body.sacred7-3-body {
     background-color: #0c0b0b;
     display: flex;
@@ -152,7 +151,7 @@ body.sacred7-3-body {
     padding: 20px;
     user-select: none;
 }
-/* Media query for smaller screens (e.g., mobile) for hidden-message */
+
 @media (max-width: 768px) {
     .hidden-message {
         font-size: clamp(0.8em, 4vw, 2em);
