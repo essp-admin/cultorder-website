@@ -44,10 +44,9 @@ body.index-body {
 }
 
 /* Styles for the number links on index.html */
-/* 🔽 ÚNICO AJUSTE: 1.5vw → 1.35vw */
 a.sacred-number {
     text-decoration: none;
-    font-size: 1.35vw;
+    font-size: 1.35vw; /* desktop ok */
     color: #da0008;
     transition: 0.3s ease;
 }
@@ -57,11 +56,14 @@ a.sacred-number:hover {
     cursor: crosshair;
 }
 
-/* Mobile */
+/* --------------------------------------------- */
+/* MOBILE */
+/* --------------------------------------------- */
 @media (max-width: 768px) {
     a.sacred-number {
-        font-size: 5vw;
+        font-size: 4.3vw; /* 🔽 ajuste fino, antes 5vw */
     }
+
     .container {
         gap: 8vw;
     }
