@@ -20,7 +20,7 @@
         }
 
         #terminal {
-            font-size: 1rem; /* Tamaño compacto y sutil */
+            font-size: 0.9rem;
             text-align: center;
             max-width: 80%;
             line-height: 1.8;
@@ -31,7 +31,7 @@
         #cursor {
             display: inline-block;
             width: 7px;
-            height: 1rem;
+            height: 0.9rem;
             background-color: #ff3131;
             margin-left: 5px;
             animation: blink 1s infinite;
@@ -47,8 +47,8 @@
             gap: 30px;
         }
 
-        .bird-logo { width: 60px; opacity: 0; transition: opacity 2s; }
-        .brand-name { width: 180px; opacity: 0; transition: opacity 2s; }
+        .bird-logo { width: 80px; opacity: 0; transition: opacity 2s; }
+        .brand-name { width: 200px; opacity: 0; transition: opacity 2s; }
 
         #hidden-input { position: absolute; opacity: 0; pointer-events: none; }
     </style>
@@ -60,8 +60,8 @@
     </div>
 
     <div id="final-stage">
-        <img src="../assets/img/isotipo.svg" id="bird" class="bird-logo">
-        <img src="../assets/img/logo.svg" id="brand" class="brand-name">
+        <img src="../assets/img/isotipo red.svg" id="bird" class="bird-logo">
+        <img src="../assets/img/logo red.svg" id="brand" class="brand-name">
     </div>
 
     <input type="text" id="hidden-input" autocomplete="off" autofocus>
@@ -72,12 +72,13 @@
         const terminal = document.getElementById("terminal");
         const finalStage = document.getElementById("final-stage");
         
-        const b1 = "NOT ALL FIRE NEEDS AIR.\nNOT ALL TRUTH NEEDS WITNESS.\nSOME THINGS SURVIVE IN SHADOW.\n\nCONTINUE? (Y/N)";
-        const b2 = "THE BRIGHTEST SIGNAL ATTRACTS HUNTERS.\nMOVE QUIETLY.\nGROW INWARD.";
-        const b3 = "DO YOU RECOGNIZE YOUR REFLECTION?";
+        // Mensajes divididos por palabras
+        const b1 = "NOT ALL FIRE NEEDS AIR. NOT ALL TRUTH NEEDS WITNESS. SOME THINGS SURVIVE IN SHADOW.".split(" ");
+        const b2 = "THE BRIGHTEST SIGNAL ATTRACTS HUNTERS. MOVE QUIETLY. GROW INWARD.".split(" ");
+        const b3 = "DO YOU RECOGNIZE YOUR REFLECTION?".split(" ");
 
         let step = 1; 
-        let charIndex = 0;
+        let wordIndex = 0;
 
         function focusInput() { hiddenInput.focus(); }
 
@@ -85,35 +86,39 @@
             const lastChar = e.data ? e.data.toUpperCase() : "";
 
             if (step === 1) {
-                if (charIndex < b1.length) {
-                    typedTextSpan.textContent += b1.charAt(charIndex);
-                    charIndex++;
+                if (wordIndex < b1.length) {
+                    typedTextSpan.textContent += b1[wordIndex] + " ";
+                    wordIndex++;
                 } else {
-                    if (lastChar === 'Y') {
-                        typedTextSpan.innerText = "";
-                        charIndex = 0;
-                        step = 2;
-                    } else if (lastChar === 'N') {
-                        window.location.href = "../index.html";
-                    }
+                    // Salto de línea e Intro antes de la pregunta
+                    typedTextSpan.innerHTML += "<br><br>DO YOU WANT TO CONTINUE? (Y/N)";
+                    step = 1.5;
+                }
+            } else if (step === 1.5) {
+                if (lastChar === 'Y') {
+                    typedTextSpan.innerText = "";
+                    wordIndex = 0;
+                    step = 2;
+                } else if (lastChar === 'N') {
+                    window.location.href = "../index.html";
                 }
             } else if (step === 2) {
-                if (charIndex < b2.length) {
-                    typedTextSpan.textContent += b2.charAt(charIndex);
-                    charIndex++;
+                if (wordIndex < b2.length) {
+                    typedTextSpan.textContent += b2[wordIndex] + " ";
+                    wordIndex++;
                 } else {
                     setTimeout(() => {
                         typedTextSpan.innerText = "";
-                        charIndex = 0;
+                        wordIndex = 0;
                         step = 3;
-                    }, 1500);
+                    }, 1000);
                 }
             } else if (step === 3) {
-                if (charIndex < b3.length) {
-                    typedTextSpan.textContent += b3.charAt(charIndex);
-                    charIndex++;
+                if (wordIndex < b3.length) {
+                    typedTextSpan.textContent += b3[wordIndex] + " ";
+                    wordIndex++;
                 } else {
-                    setTimeout(showLogos, 2000);
+                    setTimeout(showLogos, 1500);
                 }
             }
             hiddenInput.value = "";
