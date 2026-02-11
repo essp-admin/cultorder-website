@@ -6,7 +6,6 @@
     <title>Cult Order - 57</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        /* Estilos base (Negro, Centrado, Tipografía) */
         body {
             background-color: #000;
             margin: 0;
@@ -16,20 +15,20 @@
             align-items: center;
             min-height: 100vh;
             font-family: 'OCRAStd', monospace;
-            color: #da0008; /* Rojo */
+            color: #da0008; 
             text-align: center;
-            font-size: clamp(0.7em, 1.5vw, 1.2em);
+            /* Tamaño base más pequeño para desktop */
+            font-size: 0.9rem;
             user-select: none;
-            cursor: default; /* Por defecto, no es clicable */
-            transition: opacity 0.5s ease-out; /* Para la transición de pantallas */
-        }
-        @media (max-width: 768px) {
-            body {
-                font-size: clamp(0.8em, 4vw, 2em);
-            }
+            overflow: hidden;
         }
 
-        /* --- ESTILOS DEL JUEGO DE SECUENCIA --- */
+        /* Ajuste específico para Mobile */
+        @media (max-width: 768px) {
+            body {
+                font-size: 0.85rem;
+            }
+        }
 
         .game-state {
             display: flex;
@@ -39,55 +38,52 @@
 
         .game-buttons {
             display: flex;
-            gap: 15px; /* Espacio reducido entre números */
-            margin-top: 20px;
-            margin-bottom: 20px;
+            gap: 12px; 
+            margin-top: 25px;
         }
 
         .sacred-button {
-            width: 50px; 
-            height: 50px;
-            line-height: 50px;
+            width: 42px; 
+            height: 42px;
+            line-height: 42px;
             border: 1px solid #da0008;
             background-color: transparent;
             color: #da0008;
             cursor: pointer;
-            transition: background-color 0.1s;
+            font-size: 0.9rem;
+            transition: all 0.1s;
         }
 
-        /* Efecto de parpadeo */
-        .sacred-button:hover:not(.active) {
-            background-color: rgba(218, 0, 8, 0.2);
-        }
         .sacred-button.active {
             background-color: #da0008;
             color: #000;
-            animation: pulse 0.3s ease-in-out;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            transform: scale(1.05);
         }
 
-        /* --- ESTILOS DE LA RECOMPENSA (pantalla de frase) --- */
+        #status-message {
+            letter-spacing: 3px;
+            opacity: 0.6;
+            font-size: 0.75rem;
+        }
+
+        /* --- PANTALLA DE RECOMPENSA --- */
         
         #reward-screen {
-            /* NUEVAS REGLAS para centrar el contenido */
-            display: flex; 
+            display: none; 
             justify-content: center;
             align-items: center;
             height: 100vh;
             width: 100vw;
-            /* Fin de NUEVAS REGLAS */
             cursor: pointer; 
         }
 
         #reward-message {
-            max-width: 90%;
-            line-height: 1.5;
-            text-align: center; /* Asegura el centrado del texto multilínea */
-            padding: 0 5%;
+            max-width: 80%;
+            line-height: 1.6;
+            text-align: center;
+            letter-spacing: 1px;
+            /* El mensaje de revelación un poco más grande para dar impacto */
+            font-size: 1rem;
         }
 
     </style>
@@ -95,9 +91,7 @@
 <body>
     
     <div id="game-state" class="game-state">
-        <div id="status-message">
-            //OBSERVE THE NUMBERS
-        </div>
+        <div id="status-message">//INITIALIZING</div>
     
         <div class="game-buttons" id="game-buttons">
             <div class="sacred-button" id="btn-1">1</div>
@@ -105,22 +99,18 @@
             <div class="sacred-button" id="btn-5">5</div>
             <div class="sacred-button" id="btn-7">7</div>
         </div>
-        
-        <div id="result-message" style="opacity:0;"></div>
     </div>
 
-    <div id="reward-screen" style="display:none;">
+    <div id="reward-screen">
         <p id="reward-message"></p>
     </div>
 
-
     <script>
-        // Lógica del Juego de Secuencia y del Flujo de Recompensa
         document.addEventListener('DOMContentLoaded', function() {
             const sequence = [7, 3, 1, 5, 3]; 
             let playerSequence = [];
             let isDisplaying = false;
-            let currentRewardStep = 0; // 0=Juego, 1=Frase 1, 2=Frase 2, 3=Índice
+            let currentRewardStep = 0;
             
             const buttons = document.querySelectorAll('.sacred-button');
             const statusMessage = document.getElementById('status-message');
@@ -129,97 +119,65 @@
             const rewardMessage = document.getElementById('reward-message');
 
             const REWARD_PHRASES = [
-                // Frase 1
                 "Do you prefer to know the whole, painful truth, or just the part that allows for a peaceful life?", 
-                // Frase 2 (Final)
                 "Search, choose, and receive. The revelation will awaken inside you."
             ];
 
-            // --- FUNCIÓN PRINCIPAL DE GESTIÓN DE PANTALLAS ---
             function advanceRewardScreen() {
                 currentRewardStep++;
-                
                 if (currentRewardStep > REWARD_PHRASES.length) {
-                    // Si ya pasamos por ambas frases, vamos al índice
                     window.location.href = '../index.html';
                     return;
                 }
-
-                // Ocultar juego y mostrar pantalla de recompensa
                 gameState.style.display = 'none';
                 rewardScreen.style.display = 'flex';
-                document.body.style.cursor = 'pointer';
-
-                // Mostrar la frase correspondiente
                 rewardMessage.textContent = REWARD_PHRASES[currentRewardStep - 1];
             }
 
-            // --- 1. FUNCIÓN PARA MOSTRAR LA SECUENCIA AL USUARIO ---
             async function displaySequence() {
                 isDisplaying = true;
-                statusMessage.textContent = "//INTERNALIZE THEM";
+                statusMessage.textContent = "//WATCH";
+                await new Promise(r => setTimeout(r, 1000));
 
                 for (let i = 0; i < sequence.length; i++) {
-                    const buttonId = `btn-${sequence[i]}`;
-                    const button = document.getElementById(buttonId);
-
+                    const button = document.getElementById(`btn-${sequence[i]}`);
                     button.classList.add('active');
-                    await new Promise(resolve => setTimeout(resolve, 500)); 
+                    await new Promise(r => setTimeout(r, 500)); 
                     button.classList.remove('active');
-                    await new Promise(resolve => setTimeout(resolve, 200)); 
+                    await new Promise(r => setTimeout(r, 200)); 
                 }
-
                 isDisplaying = false;
-                playerSequence = [];
-                statusMessage.textContent = "//REPEAT THE PATTERN";
+                statusMessage.textContent = "//REPEAT";
             }
 
-            // --- 2. FUNCIÓN PARA MANEJAR EL CLIC DEL JUGADOR ---
             function handleInput(value) {
                 if (isDisplaying) return;
-
                 playerSequence.push(value);
                 const currentStep = playerSequence.length - 1;
                 const clickedButton = document.getElementById(`btn-${value}`);
 
-                // Efecto de feedback
                 clickedButton.classList.add('active');
-                setTimeout(() => { clickedButton.classList.remove('active'); }, 100);
+                setTimeout(() => { clickedButton.classList.remove('active'); }, 150);
 
-                // Comprobar input
                 if (value !== sequence[currentStep]) {
-                    // Fallo
-                    statusMessage.textContent = "//ACCESS DENIED. RITUAL FAILURE.";
-                    setTimeout(() => {
-                        statusMessage.textContent = "//OBSERVE THE NUMBERS";
-                        setTimeout(displaySequence, 1500);
-                    }, 2000);
+                    statusMessage.textContent = "//FAILED";
+                    playerSequence = [];
+                    setTimeout(displaySequence, 1500);
                     return;
                 }
 
-                // Éxito
                 if (playerSequence.length === sequence.length) {
-                    statusMessage.textContent = "//SEQUENCE ASCENDED. REVELATION AWAITS.";
-                    // Activa el flujo de recompensa
-                    setTimeout(advanceRewardScreen, 2000);
+                    statusMessage.textContent = "//ASCENDED";
+                    setTimeout(advanceRewardScreen, 1200);
                 }
             }
 
-            // Añadir listeners de click a los botones del juego
             buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const value = parseInt(button.textContent); 
-                    handleInput(value);
-                });
+                button.addEventListener('click', () => handleInput(parseInt(button.textContent)));
             });
 
-            // Añadir listener de click a la PANTALLA DE RECOMPENSA
             rewardScreen.addEventListener('click', advanceRewardScreen);
-
-            // --- 3. INICIAR EL JUEGO ---
-            // Inicia la secuencia después de un pequeño retraso
             setTimeout(displaySequence, 2000); 
-
         });
     </script>
 </body>
