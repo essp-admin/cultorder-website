@@ -11,27 +11,27 @@
             height: 100vh;
             background-color: #000;
             overflow: hidden;
-            cursor: none; /* Ocultamos el ratón para usar la linterna */
+            cursor: none; 
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* Los símbolos ocultos */
         .hidden-content {
             position: absolute;
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             font-family: 'OCRAStd', monospace;
-            color: #ff3131; /* Rojo Cult Order */
-            font-size: 5vw;
+            color: #ff3131;
+            font-size: 4vw;
             user-select: none;
+            text-align: center;
         }
 
-        /* La capa de oscuridad con la máscara circular */
         .scanner-overlay {
             position: fixed;
             top: 0;
@@ -39,20 +39,46 @@
             width: 100%;
             height: 100%;
             background: black;
-            /* El círculo que revela lo de abajo */
-            mask-image: radial-gradient(circle 100px at var(--x) var(--y), transparent 0%, black 100%);
-            -webkit-mask-image: radial-gradient(circle 100px at var(--x) var(--y), transparent 0%, black 100%);
+            /* El gradiente circular que revela el fondo */
+            mask-image: radial-gradient(circle 120px at var(--x, -1000px) var(--y, -1000px), transparent 0%, black 100%);
+            -webkit-mask-image: radial-gradient(circle 120px at var(--x, -1000px) var(--y, -1000px), transparent 0%, black 100%);
         }
 
-        .hint {
+        .back-link {
             position: absolute;
-            bottom: 20px;
+            bottom: 30px;
             color: #333;
-            font-family: 'OCRAStd', monospace;
-            font-size: 0.8em;
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
         }
     </style>
 </head>
 <body>
 
-    <div class="hidden-content
+    <div class="hidden-content">
+        <div>[ ∴ ]</div>
+        <div>MEMENTO MORI</div>
+        <a href="../index.html" class="back-link">VOLVER AL ORDEN</a>
+    </div>
+
+    <div class="scanner-overlay"></div>
+
+    <script>
+        const overlay = document.querySelector('.scanner-overlay');
+        
+        // Actualiza las variables CSS con la posición del ratón
+        document.addEventListener('mousemove', (e) => {
+            document.body.style.setProperty('--x', e.clientX + 'px');
+            document.body.style.setProperty('--y', e.clientY + 'px');
+        });
+
+        // Para dispositivos táctiles
+        document.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            document.body.style.setProperty('--x', touch.clientX + 'px');
+            document.body.style.setProperty('--y', touch.clientY + 'px');
+        });
+    </script>
+</body>
+</html>
