@@ -6,102 +6,53 @@
     <title>Cult Order - 13</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        @font-face {
-            font-family: 'OCRAStd';
-            src: url('../assets/fonts/OCRAStd.otf') format('opentype');
-            font-weight: normal;
-            font-style: normal;
-        }
-
         body {
-            background-color: #0c0b0b;
             margin: 0;
-            padding: 0;
+            height: 100vh;
+            background-color: #000;
             overflow: hidden;
+            cursor: none; /* Ocultamos el ratón para usar la linterna */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            cursor: pointer;
-            font-family: 'OCRAStd', monospace; /* Aplicamos la fuente */
         }
 
-        .glitch-text {
-            color: #da0008;
-            font-size: clamp(0.7em, 1.5vw, 1.2em);
-            font-weight: bold;
-            text-align: center;
-            animation: glitch 1s infinite;
-        }
-        
-        /* Ajuste para el padding más extremo */
-        .glitch-text p {
-            max-width: 40%; /* Reducido para un efecto más estrecho (ajusta este valor) */
-            margin: auto; /* Centra el texto horizontalmente */
-            line-height: 1.5;
-        }
-
-        @keyframes glitch {
-            0% {
-                transform: translate(0, 0);
-                text-shadow: 
-                    2px 2px 0 #fcfcfc,
-                    -2px -2px 0 #0c0b0b;
-            }
-            25% {
-                transform: translate(3px, -3px);
-                text-shadow: 
-                    -2px 2px 0 #da0008,
-                    2px -2px 0 #fcfcfc;
-            }
-            50% {
-                transform: translate(-3px, 3px);
-                text-shadow: 
-                    2px -2px 0 #0c0b0b,
-                    -2px 2px 0 #da0008;
-            }
-            75% {
-                transform: translate(-2px, -2px);
-                text-shadow: 
-                    -2px 2px 0 #fcfcfc,
-                    2px -2px 0 #0c0b0b;
-            }
-            100% {
-                transform: translate(0, 0);
-                text-shadow: 
-                    2px 2px 0 #da0008,
-                    -2px -2px 0 #fcfcfc;
-            }
+        /* Los símbolos ocultos */
+        .hidden-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'OCRAStd', monospace;
+            color: #ff3131; /* Rojo Cult Order */
+            font-size: 5vw;
+            user-select: none;
         }
 
-        @media (max-width: 768px) {
-            .glitch-text {
-                font-size: clamp(0.8em, 4vw, 2em);
-            }
-            .glitch-text p {
-                max-width: 60%; /* Ajusta el ancho para móvil si es necesario */
-            }
+        /* La capa de oscuridad con la máscara circular */
+        .scanner-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            /* El círculo que revela lo de abajo */
+            mask-image: radial-gradient(circle 100px at var(--x) var(--y), transparent 0%, black 100%);
+            -webkit-mask-image: radial-gradient(circle 100px at var(--x) var(--y), transparent 0%, black 100%);
+        }
+
+        .hint {
+            position: absolute;
+            bottom: 20px;
+            color: #333;
+            font-family: 'OCRAStd', monospace;
+            font-size: 0.8em;
         }
     </style>
 </head>
 <body>
-    <div class="glitch-text">
-        <p>Consciousness begins with you, and everything expands from there</p>
-    </div>
-    <script>
-        document.body.addEventListener('click', function() {
-            window.location.href = 'https://www.cult-order.com/';
-        });
-    </script>
-</body>
-</html>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>13</title>
-    <link rel="stylesheet" href="../style.css">
-</head>
-<body>
+    <div class="hidden-content
