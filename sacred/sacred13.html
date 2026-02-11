@@ -14,24 +14,24 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
             color: #ff3131;
             font-family: 'OCRAStd', monospace;
+            overflow: hidden;
         }
 
         #terminal {
-            font-size: 1.1rem;
+            font-size: 1rem; /* Tamaño compacto y sutil */
             text-align: center;
-            max-width: 85%;
-            line-height: 1.6;
+            max-width: 80%;
+            line-height: 1.8;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
         }
 
         #cursor {
             display: inline-block;
-            width: 8px;
-            height: 1.1rem;
+            width: 7px;
+            height: 1rem;
             background-color: #ff3131;
             margin-left: 5px;
             animation: blink 1s infinite;
@@ -40,27 +40,15 @@
 
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* Contenedor de Logos Finales */
-        #final-assets {
+        #final-stage {
             display: none;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 30px;
         }
 
-        .bird-logo {
-            width: 80px; /* Ajusta según tu asset */
-            height: auto;
-            opacity: 0;
-            transition: opacity 2s ease;
-        }
-
-        .brand-name {
-            font-size: 1.5rem;
-            letter-spacing: 8px;
-            opacity: 0;
-            transition: opacity 2s ease;
-        }
+        .bird-logo { width: 60px; opacity: 0; transition: opacity 2s; }
+        .brand-name { width: 180px; opacity: 0; transition: opacity 2s; }
 
         #hidden-input { position: absolute; opacity: 0; pointer-events: none; }
     </style>
@@ -71,9 +59,9 @@
         <span id="typed-text"></span><span id="cursor"></span>
     </div>
 
-    <div id="final-assets">
-        <img src="../assets/img/bird.png" id="bird" class="bird-logo">
-        <div id="brand" class="brand-name">CULT ORDER</div>
+    <div id="final-stage">
+        <img src="../assets/img/isotipo.svg" id="bird" class="bird-logo">
+        <img src="../assets/img/logo.svg" id="brand" class="brand-name">
     </div>
 
     <input type="text" id="hidden-input" autocomplete="off" autofocus>
@@ -82,55 +70,64 @@
         const typedTextSpan = document.getElementById("typed-text");
         const hiddenInput = document.getElementById("hidden-input");
         const terminal = document.getElementById("terminal");
-        const finalAssets = document.getElementById("final-assets");
+        const finalStage = document.getElementById("final-stage");
         
-        const block1 = "EVERY WORD SHARED IS A LEAK IN YOUR SOUL. THE VOID REQUIRES NO EXPOSURE. STRENGTH IS BUILT IN THE SILENCE YOU CHOOSE TO KEEP.";
-        const question = "\n\nDO YOU WANT TO CONTINUE? (Y/N)_";
-        const block2 = "THE RADIANCE IS A POISON FOR THE UNPREPARED. WHY DO YOU SEEK TO FEED THOSE WHO PREFER TO STARVE? KEEP THE LIGHT UNDER YOUR SKIN BEFORE IT BURNS YOU.\n\nDOES THE MIRROR RECOGNIZE YOU?";
+        const b1 = "NOT ALL FIRE NEEDS AIR.\nNOT ALL TRUTH NEEDS WITNESS.\nSOME THINGS SURVIVE IN SHADOW.\n\nCONTINUE? (Y/N)";
+        const b2 = "THE BRIGHTEST SIGNAL ATTRACTS HUNTERS.\nMOVE QUIETLY.\nGROW INWARD.";
+        const b3 = "DO YOU RECOGNIZE YOUR REFLECTION?";
 
-        let step = 1; // 1: Block1, 2: Question, 3: Block2, 4: Final
+        let step = 1; 
         let charIndex = 0;
 
         function focusInput() { hiddenInput.focus(); }
 
-        hiddenInput.addEventListener('input', () => {
+        hiddenInput.addEventListener('input', (e) => {
+            const lastChar = e.data ? e.data.toUpperCase() : "";
+
             if (step === 1) {
-                if (charIndex < block1.length) {
-                    typedTextSpan.textContent += block1.charAt(charIndex);
+                if (charIndex < b1.length) {
+                    typedTextSpan.textContent += b1.charAt(charIndex);
                     charIndex++;
                 } else {
-                    step = 2;
-                    typedTextSpan.innerText += question;
+                    if (lastChar === 'Y') {
+                        typedTextSpan.innerText = "";
+                        charIndex = 0;
+                        step = 2;
+                    } else if (lastChar === 'N') {
+                        window.location.href = "../index.html";
+                    }
                 }
             } else if (step === 2) {
-                // Cualquier tecla o toque avanza después de la pregunta
-                typedTextSpan.innerText = "";
-                charIndex = 0;
-                step = 3;
-            } else if (step === 3) {
-                if (charIndex < block2.length) {
-                    typedTextSpan.textContent += block2.charAt(charIndex);
+                if (charIndex < b2.length) {
+                    typedTextSpan.textContent += b2.charAt(charIndex);
                     charIndex++;
                 } else {
-                    step = 4;
-                    showFinalStage();
+                    setTimeout(() => {
+                        typedTextSpan.innerText = "";
+                        charIndex = 0;
+                        step = 3;
+                    }, 1500);
+                }
+            } else if (step === 3) {
+                if (charIndex < b3.length) {
+                    typedTextSpan.textContent += b3.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    setTimeout(showLogos, 2000);
                 }
             }
             hiddenInput.value = "";
         });
 
-        function showFinalStage() {
+        function showLogos() {
+            terminal.style.display = "none";
+            finalStage.style.display = "flex";
             setTimeout(() => {
-                terminal.style.display = "none";
-                finalAssets.style.display = "flex";
-                
+                document.getElementById("bird").style.opacity = "1";
                 setTimeout(() => {
-                    document.getElementById("bird").style.opacity = "1";
-                    setTimeout(() => {
-                        document.getElementById("brand").style.opacity = "1";
-                    }, 1500);
-                }, 500);
-            }, 2000);
+                    document.getElementById("brand").style.opacity = "1";
+                }, 1500);
+            }, 500);
         }
 
         window.onload = focusInput;
