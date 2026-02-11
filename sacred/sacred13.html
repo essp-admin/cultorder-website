@@ -11,95 +11,96 @@
             height: 100vh;
             background-color: #000;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            cursor: crosshair;
-        }
-
-        #frequency-container {
-            text-align: center;
-            width: 90%;
-            max-width: 800px;
-        }
-
-        #message {
-            font-family: 'OCRAStd', monospace;
             color: #ff3131;
-            font-size: clamp(1rem, 5vw, 2.2rem);
-            text-transform: uppercase;
-            letter-spacing: 6px;
-            filter: blur(25px);
-            opacity: 0;
-            transition: filter 0.12s ease, opacity 0.12s ease;
-            user-select: none;
-            line-height: 1.4;
+            font-family: 'OCRAStd', monospace;
         }
 
-        .noise-indicator {
+        #input-simulation {
+            font-size: 1.5rem;
+            text-align: center;
+            max-width: 80%;
+            min-height: 1.5em;
+            letter-spacing: 2px;
+            word-wrap: break-word;
+        }
+
+        #cursor {
+            display: inline-block;
+            width: 10px;
+            height: 1.5rem;
+            background-color: #ff3131;
+            margin-left: 5px;
+            animation: blink 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Input oculto para forzar el teclado en móvil */
+        #hidden-input {
             position: absolute;
-            bottom: 30px;
-            font-size: 0.6rem;
-            color: #121212; /* Casi invisible para mantener el misterio */
-            letter-spacing: 4px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #prompt {
+            margin-bottom: 20px;
+            font-size: 0.8rem;
+            color: #444;
             text-transform: uppercase;
         }
     </style>
 </head>
-<body>
+<body onclick="focusInput()">
 
-    <div id="frequency-container">
-        <div id="message">SEARCHING SIGNAL...</div>
-    </div>
+    <div id="prompt">TYPE YOUR TRUTH...</div>
     
-    <div class="noise-indicator">LAYER SCANNER ACTIVE // FREQUENCY HUNT</div>
+    <div id="input-simulation">
+        <span id="typed-text"></span><span id="cursor"></span>
+    </div>
+
+    <input type="text" id="hidden-input" autocomplete="off">
 
     <script>
-        const message = document.getElementById('message');
+        const typedTextSpan = document.getElementById("typed-text");
+        const hiddenInput = document.getElementById("hidden-input");
         
-        // Las 3 capas de profundidad del submundo
-        const layers = [
-            { threshold: 0.15, text: "IS THIS A DREAM?" },
-            { threshold: 0.50, text: "ARE YOU AWAKE?" },
-            { threshold: 0.82, text: "DOES THE MIRROR RECOGNIZE YOU?" }
-        ];
+        // La frase que la web escribirá por la fuerza
+        const forcedMessage = "I HAVE SEEN THE SUBWORLD. I HAVE SEEN YOUR FACE. DOES THE MIRROR RECOGNIZE YOU?";
+        let charIndex = 0;
 
-        function updateFrequencies(clientX) {
-            const percent = clientX / window.innerWidth;
-            let activeLayer = null;
-            let minDistance = 1;
-
-            layers.forEach(layer => {
-                const distance = Math.abs(percent - layer.threshold);
-                // Rango de captura: solo revelamos si está cerca del punto exacto
-                if (distance < 0.12) { 
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        activeLayer = layer;
-                    }
-                }
-            });
-
-            if (activeLayer) {
-                message.innerText = activeLayer.text;
-                // Fórmula de enfoque: a menor distancia, más nitidez
-                const blurValue = minDistance * 70; 
-                const opacityValue = 1 - (minDistance * 8); 
-                
-                message.style.filter = `blur(${blurValue}px)`;
-                message.style.opacity = Math.max(opacityValue, 0.03);
-            } else {
-                // Estado de ruido/estática cuando no hay sintonía
-                message.style.filter = "blur(40px)";
-                message.style.opacity = "0.02";
-            }
+        function focusInput() {
+            hiddenInput.focus();
         }
 
-        document.addEventListener('mousemove', (e) => updateFrequencies(e.clientX));
-        
-        document.addEventListener('touchmove', (e) => {
-            updateFrequencies(e.touches[0].clientX);
+        hiddenInput.addEventListener('input', (e) => {
+            // Cada vez que el usuario presiona una tecla
+            if (charIndex < forcedMessage.length) {
+                typedTextSpan.textContent += forcedMessage.charAt(charIndex);
+                charIndex++;
+            }
+            // Limpiamos el input oculto para que siempre pueda seguir escribiendo
+            hiddenInput.value = "";
+
+            // Efecto final cuando termina la frase
+            if (charIndex >= forcedMessage.length) {
+                setTimeout(() => {
+                    document.body.style.backgroundColor = "#ff3131";
+                    document.body.style.color = "#000";
+                    document.getElementById('cursor').style.backgroundColor = "#000";
+                }, 500);
+            }
         });
+
+        // Enfocar automáticamente al cargar
+        window.onload = focusInput;
     </script>
 </body>
 </html>
