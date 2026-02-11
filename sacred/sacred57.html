@@ -6,6 +6,7 @@
     <title>Cult Order - 57</title>
     <link rel="stylesheet" href="../style.css">
     <style>
+        /* Estilos base */
         body {
             background-color: #000;
             margin: 0;
@@ -17,17 +18,20 @@
             font-family: 'OCRAStd', monospace;
             color: #da0008; 
             text-align: center;
-            /* Tamaño base más pequeño para desktop */
             font-size: 0.9rem;
             user-select: none;
             overflow: hidden;
         }
 
-        /* Ajuste específico para Mobile */
-        @media (max-width: 768px) {
-            body {
-                font-size: 0.85rem;
-            }
+        /* Ajuste de intensidad para el mensaje superior */
+        #status-message {
+            letter-spacing: 3px;
+            opacity: 1; /* Intensidad total */
+            font-size: 0.75rem;
+            color: #da0008;
+            text-shadow: 0 0 8px rgba(218, 0, 8, 0.6); /* Resplandor para legibilidad */
+            text-transform: uppercase;
+            margin-bottom: 20px;
         }
 
         .game-state {
@@ -38,36 +42,29 @@
 
         .game-buttons {
             display: flex;
-            gap: 12px; 
-            margin-top: 25px;
+            gap: 15px; 
+            margin-top: 10px;
         }
 
         .sacred-button {
-            width: 42px; 
-            height: 42px;
-            line-height: 42px;
+            width: 45px; 
+            height: 45px;
+            line-height: 45px;
             border: 1px solid #da0008;
             background-color: transparent;
             color: #da0008;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: all 0.1s;
+            transition: all 0.1s ease;
         }
 
         .sacred-button.active {
             background-color: #da0008;
             color: #000;
-            transform: scale(1.05);
+            box-shadow: 0 0 15px #da0008;
         }
 
-        #status-message {
-            letter-spacing: 3px;
-            opacity: 0.6;
-            font-size: 0.75rem;
-        }
-
-        /* --- PANTALLA DE RECOMPENSA --- */
-        
+        /* Pantalla de recompensa centrada */
         #reward-screen {
             display: none; 
             justify-content: center;
@@ -78,14 +75,19 @@
         }
 
         #reward-message {
-            max-width: 80%;
+            max-width: 85%;
             line-height: 1.6;
             text-align: center;
-            letter-spacing: 1px;
-            /* El mensaje de revelación un poco más grande para dar impacto */
             font-size: 1rem;
+            letter-spacing: 1px;
+            opacity: 1;
+            text-shadow: 0 0 5px rgba(218, 0, 8, 0.3);
         }
 
+        @media (max-width: 768px) {
+            body { font-size: 0.85rem; }
+            .sacred-button { width: 40px; height: 40px; line-height: 40px; }
+        }
     </style>
 </head>
 <body>
