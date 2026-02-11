@@ -19,87 +19,120 @@
             font-family: 'OCRAStd', monospace;
         }
 
-        #input-simulation {
-            font-size: 1.5rem;
+        #terminal {
+            font-size: 1.1rem;
             text-align: center;
-            max-width: 80%;
-            min-height: 1.5em;
-            letter-spacing: 2px;
-            word-wrap: break-word;
+            max-width: 85%;
+            line-height: 1.6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         #cursor {
             display: inline-block;
-            width: 10px;
-            height: 1.5rem;
+            width: 8px;
+            height: 1.1rem;
             background-color: #ff3131;
             margin-left: 5px;
-            animation: blink 0.8s infinite;
+            animation: blink 1s infinite;
             vertical-align: middle;
         }
 
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Contenedor de Logos Finales */
+        #final-assets {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
         }
 
-        /* Input oculto para forzar el teclado en móvil */
-        #hidden-input {
-            position: absolute;
+        .bird-logo {
+            width: 80px; /* Ajusta según tu asset */
+            height: auto;
             opacity: 0;
-            pointer-events: none;
+            transition: opacity 2s ease;
         }
 
-        #prompt {
-            margin-bottom: 20px;
-            font-size: 0.8rem;
-            color: #444;
-            text-transform: uppercase;
+        .brand-name {
+            font-size: 1.5rem;
+            letter-spacing: 8px;
+            opacity: 0;
+            transition: opacity 2s ease;
         }
+
+        #hidden-input { position: absolute; opacity: 0; pointer-events: none; }
     </style>
 </head>
 <body onclick="focusInput()">
 
-    <div id="prompt">TYPE YOUR TRUTH...</div>
-    
-    <div id="input-simulation">
+    <div id="terminal">
         <span id="typed-text"></span><span id="cursor"></span>
     </div>
 
-    <input type="text" id="hidden-input" autocomplete="off">
+    <div id="final-assets">
+        <img src="../assets/img/bird.png" id="bird" class="bird-logo">
+        <div id="brand" class="brand-name">CULT ORDER</div>
+    </div>
+
+    <input type="text" id="hidden-input" autocomplete="off" autofocus>
 
     <script>
         const typedTextSpan = document.getElementById("typed-text");
         const hiddenInput = document.getElementById("hidden-input");
+        const terminal = document.getElementById("terminal");
+        const finalAssets = document.getElementById("final-assets");
         
-        // La frase que la web escribirá por la fuerza
-        const forcedMessage = "I HAVE SEEN THE SUBWORLD. I HAVE SEEN YOUR FACE. DOES THE MIRROR RECOGNIZE YOU?";
+        const block1 = "EVERY WORD SHARED IS A LEAK IN YOUR SOUL. THE VOID REQUIRES NO EXPOSURE. STRENGTH IS BUILT IN THE SILENCE YOU CHOOSE TO KEEP.";
+        const question = "\n\nDO YOU WANT TO CONTINUE? (Y/N)_";
+        const block2 = "THE RADIANCE IS A POISON FOR THE UNPREPARED. WHY DO YOU SEEK TO FEED THOSE WHO PREFER TO STARVE? KEEP THE LIGHT UNDER YOUR SKIN BEFORE IT BURNS YOU.\n\nDOES THE MIRROR RECOGNIZE YOU?";
+
+        let step = 1; // 1: Block1, 2: Question, 3: Block2, 4: Final
         let charIndex = 0;
 
-        function focusInput() {
-            hiddenInput.focus();
-        }
+        function focusInput() { hiddenInput.focus(); }
 
-        hiddenInput.addEventListener('input', (e) => {
-            // Cada vez que el usuario presiona una tecla
-            if (charIndex < forcedMessage.length) {
-                typedTextSpan.textContent += forcedMessage.charAt(charIndex);
-                charIndex++;
+        hiddenInput.addEventListener('input', () => {
+            if (step === 1) {
+                if (charIndex < block1.length) {
+                    typedTextSpan.textContent += block1.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    step = 2;
+                    typedTextSpan.innerText += question;
+                }
+            } else if (step === 2) {
+                // Cualquier tecla o toque avanza después de la pregunta
+                typedTextSpan.innerText = "";
+                charIndex = 0;
+                step = 3;
+            } else if (step === 3) {
+                if (charIndex < block2.length) {
+                    typedTextSpan.textContent += block2.charAt(charIndex);
+                    charIndex++;
+                } else {
+                    step = 4;
+                    showFinalStage();
+                }
             }
-            // Limpiamos el input oculto para que siempre pueda seguir escribiendo
             hiddenInput.value = "";
-
-            // Efecto final cuando termina la frase
-            if (charIndex >= forcedMessage.length) {
-                setTimeout(() => {
-                    document.body.style.backgroundColor = "#ff3131";
-                    document.body.style.color = "#000";
-                    document.getElementById('cursor').style.backgroundColor = "#000";
-                }, 500);
-            }
         });
 
-        // Enfocar automáticamente al cargar
+        function showFinalStage() {
+            setTimeout(() => {
+                terminal.style.display = "none";
+                finalAssets.style.display = "flex";
+                
+                setTimeout(() => {
+                    document.getElementById("bird").style.opacity = "1";
+                    setTimeout(() => {
+                        document.getElementById("brand").style.opacity = "1";
+                    }, 1500);
+                }, 500);
+            }, 2000);
+        }
+
         window.onload = focusInput;
     </script>
 </body>
