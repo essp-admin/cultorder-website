@@ -11,131 +11,104 @@
             height: 100vh;
             background-color: #000;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             color: #ff3131;
             font-family: 'OCRAStd', monospace;
+            cursor: pointer;
             overflow: hidden;
+            user-select: none;
         }
 
-        #terminal {
-            font-size: 0.9rem;
+        #content-wrapper {
             text-align: center;
-            max-width: 80%;
+            width: 85%;
+            max-width: 600px;
+        }
+
+        .text-block {
+            font-size: 0.95rem;
             line-height: 1.8;
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            display: none; /* Se activan por JS */
         }
 
-        #cursor {
-            display: inline-block;
-            width: 7px;
-            height: 0.9rem;
-            background-color: #ff3131;
-            margin-left: 5px;
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        #final-stage {
+        .asset-container {
             display: none;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 30px;
         }
 
-        .bird-logo { width: 80px; opacity: 0; transition: opacity 2s; }
-        .brand-name { width: 200px; opacity: 0; transition: opacity 2s; }
+        .asset-container img {
+            width: 100px; /* Tamaño del pájaro */
+            height: auto;
+        }
 
-        #hidden-input { position: absolute; opacity: 0; pointer-events: none; }
+        .logo-text {
+            width: 220px !important; /* Tamaño del logo tipográfico */
+        }
+
+        /* Animación sutil de entrada */
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; filter: blur(10px); }
+            to { opacity: 1; filter: blur(0); }
+        }
     </style>
 </head>
-<body onclick="focusInput()">
+<body onclick="nextStep()">
 
-    <div id="terminal">
-        <span id="typed-text"></span><span id="cursor"></span>
+    <div id="content-wrapper">
+        <div id="step-1" class="text-block">
+            NOT ALL FIRE NEEDS AIR.<br>
+            NOT ALL TRUTH NEEDS WITNESS.<br>
+            SOME THINGS SURVIVE IN SHADOW.
+        </div>
+
+        <div id="step-2" class="text-block">
+            THE BRIGHTEST SIGNAL ATTRACTS HUNTERS.<br><br>
+            DO YOU RECOGNIZE YOUR REFLECTION?
+        </div>
+
+        <div id="step-3" class="asset-container">
+            <img src="../assets/img/isotipo red.svg" alt="Isotipo">
+        </div>
+
+        <div id="step-4" class="asset-container">
+            <img src="../assets/img/logo red.svg" alt="Logo" class="logo-text">
+        </div>
     </div>
-
-    <div id="final-stage">
-        <img src="../assets/img/isotipo red.svg" id="bird" class="bird-logo">
-        <img src="../assets/img/logo red.svg" id="brand" class="brand-name">
-    </div>
-
-    <input type="text" id="hidden-input" autocomplete="off" autofocus>
 
     <script>
-        const typedTextSpan = document.getElementById("typed-text");
-        const hiddenInput = document.getElementById("hidden-input");
-        const terminal = document.getElementById("terminal");
-        const finalStage = document.getElementById("final-stage");
-        
-        // Mensajes divididos por palabras
-        const b1 = "NOT ALL FIRE NEEDS AIR. NOT ALL TRUTH NEEDS WITNESS. SOME THINGS SURVIVE IN SHADOW.".split(" ");
-        const b2 = "THE BRIGHTEST SIGNAL ATTRACTS HUNTERS. MOVE QUIETLY. GROW INWARD.".split(" ");
-        const b3 = "DO YOU RECOGNIZE YOUR REFLECTION?".split(" ");
+        let currentStep = 1;
 
-        let step = 1; 
-        let wordIndex = 0;
+        // Mostrar el primer paso al cargar
+        document.getElementById('step-1').style.display = 'block';
+        document.getElementById('step-1').classList.add('fade-in');
 
-        function focusInput() { hiddenInput.focus(); }
+        function nextStep() {
+            // Ocultar el paso actual
+            const currentElement = document.getElementById(`step-${currentStep}`);
+            if (currentElement) currentElement.style.display = 'none';
 
-        hiddenInput.addEventListener('input', (e) => {
-            const lastChar = e.data ? e.data.toUpperCase() : "";
+            currentStep++;
 
-            if (step === 1) {
-                if (wordIndex < b1.length) {
-                    typedTextSpan.textContent += b1[wordIndex] + " ";
-                    wordIndex++;
-                } else {
-                    // Salto de línea e Intro antes de la pregunta
-                    typedTextSpan.innerHTML += "<br><br>DO YOU WANT TO CONTINUE? (Y/N)";
-                    step = 1.5;
-                }
-            } else if (step === 1.5) {
-                if (lastChar === 'Y') {
-                    typedTextSpan.innerText = "";
-                    wordIndex = 0;
-                    step = 2;
-                } else if (lastChar === 'N') {
-                    window.location.href = "../index.html";
-                }
-            } else if (step === 2) {
-                if (wordIndex < b2.length) {
-                    typedTextSpan.textContent += b2[wordIndex] + " ";
-                    wordIndex++;
-                } else {
-                    setTimeout(() => {
-                        typedTextSpan.innerText = "";
-                        wordIndex = 0;
-                        step = 3;
-                    }, 1000);
-                }
-            } else if (step === 3) {
-                if (wordIndex < b3.length) {
-                    typedTextSpan.textContent += b3[wordIndex] + " ";
-                    wordIndex++;
-                } else {
-                    setTimeout(showLogos, 1500);
-                }
+            // Mostrar el siguiente o ir a home
+            const nextElement = document.getElementById(`step-${currentStep}`);
+            
+            if (nextElement) {
+                // Si es un contenedor de imagen usamos flex, si es texto usamos block
+                nextElement.style.display = (currentStep >= 3) ? 'flex' : 'block';
+                nextElement.classList.add('fade-in');
+            } else {
+                // Si no hay más pasos, volvemos a la home
+                window.location.href = "../index.html";
             }
-            hiddenInput.value = "";
-        });
-
-        function showLogos() {
-            terminal.style.display = "none";
-            finalStage.style.display = "flex";
-            setTimeout(() => {
-                document.getElementById("bird").style.opacity = "1";
-                setTimeout(() => {
-                    document.getElementById("brand").style.opacity = "1";
-                }, 1500);
-            }, 500);
         }
-
-        window.onload = focusInput;
     </script>
 </body>
 </html>
