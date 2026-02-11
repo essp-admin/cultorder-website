@@ -1,16 +1,48 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cult Order</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .grid-item {
+            font-family: 'OCRAStd', monospace;
+            color: #da0008; /* El mismo rojo que el juego */
+            text-decoration: none;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            opacity: 0.6;
+            transition: all 0.5s ease;
+        }
+
+        .grid-item:hover {
+            opacity: 1;
+            letter-spacing: 8px; /* Efecto de expansión al acercarse */
+            filter: drop-shadow(0 0 5px #da0008);
+        }
+    </style>
 </head>
 <body>
-    <div class="grid-container">
-        <a href="sacred/sacred13.html" class="grid-item">13</a>
+
+    <div class="container">
         <a href="sacred/sacred57.html" class="grid-item">57</a>
     </div>
+
 </body>
 </html>
 
