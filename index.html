@@ -1,53 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cult Order</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Cult Order - 57</title>
+    <link rel="stylesheet" href="../style.css">
     <style>
         body {
-            margin: 0;
             background-color: #000;
+            margin: 0;
             display: flex;
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
+            font-family: 'OCRAStd', monospace;
+            color: #da0008; 
+            text-align: center;
+            font-size: 0.9rem;
+            user-select: none;
             overflow: hidden;
         }
 
-        .container {
+        #status-message {
+            letter-spacing: 3px;
+            opacity: 1; /* Rojo sólido e intenso */
+            font-size: 0.75rem;
+            color: #da0008;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            /* Eliminado cualquier rastro de text-shadow */
+        }
+
+        .game-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-buttons {
+            display: flex;
+            gap: 15px; 
+            margin-top: 10px;
+        }
+
+        .sacred-button {
+            width: 45px; 
+            height: 45px;
+            line-height: 45px;
+            border: 1px solid #da0008;
+            background-color: transparent;
+            color: #da0008;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: none; /* Sin suavizados */
+        }
+
+        .sacred-button.active {
+            background-color: #da0008;
+            color: #000;
+            /* Eliminado el box-shadow glow */
+        }
+
+        #reward-screen {
+            display: none; 
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            cursor: pointer; 
+        }
+
+        #reward-message {
+            max-width: 85%;
+            line-height: 1.6;
             text-align: center;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #da0008;
         }
 
-        .grid-item {
-            font-family: 'OCRAStd', monospace;
-            color: #da0008; /* Rojo oficial */
-            text-decoration: none;
-            font-size: 1.1rem;
-            letter-spacing: 4px;
-            
-            /* INTENSIDAD */
-            opacity: 1; /* Eliminamos la transparencia */
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(218, 0, 8, 0.5); /* Resplandor de señal */
-            
-            transition: all 0.4s ease;
-        }
-
-        .grid-item:hover {
-            letter-spacing: 10px;
-            text-shadow: 0 0 15px rgba(218, 0, 8, 0.8); /* Brillo más fuerte al pasar el ratón */
-            filter: brightness(1.2);
+        @media (max-width: 768px) {
+            body { font-size: 0.85rem; }
+            .sacred-button { width: 40px; height: 40px; line-height: 40px; }
         }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <a href="sacred/sacred57.html" class="grid-item">57</a>
+    
+    <div id="game-state" class="game-state">
+        <div id="status-message">//INITIALIZING</div>
+        <div class="game-buttons" id="game-buttons">
+            <div class="sacred-button" id="btn-1">1</div>
+            <div class="sacred-button" id="btn-3">3</div>
+            <div class="sacred-button" id="btn-5">5</div>
+            <div class="sacred-button" id="btn-7">7</div>
+        </div>
     </div>
 
+    <div id="reward-screen">
+        <p id="reward-message"></p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sequence = [7, 3, 1, 5, 3]; 
+            let playerSequence = [];
+            let isDisplaying = false;
+            let currentRewardStep = 0;
+            
+            const buttons = document.querySelectorAll('.sacred-button');
+            const statusMessage = document.getElementById('status-message');
+            const gameState = document.getElementById('game-state');
+            const rewardScreen = document.getElementById('reward-screen');
+            const rewardMessage = document.getElementById('reward-message');
+
+            const REWARD_PHRASES = [
+                "Do you prefer to know the whole, painful truth, or just the part that allows for a peaceful life?", 
+                "Search, choose, and receive. The revelation will awaken inside you."
+            ];
+
+            function advanceRewardScreen() {
+                currentRewardStep++;
+                if (currentRewardStep > REWARD_PHRASES.length) {
+                    window.location.href = '../index.html';
+                    return;
+                }
+                gameState.style.display = 'none';
+                rewardScreen.style.display = 'flex';
+                rewardMessage.textContent = REWARD_PHRASES[currentRewardStep - 1];
+            }
+
+            async function displaySequence() {
+                isDisplaying = true;
+                statusMessage.textContent = "//WATCH";
+                await new Promise(r => setTimeout(r, 1000));
+
+                for (let i = 0; i < sequence.length; i++) {
+                    const button = document.getElementById(`btn-${sequence[i]}`);
+                    button.classList.add('active');
+                    await new Promise(r => setTimeout(r, 500)); 
+                    button.classList.remove('active');
+                    await new Promise(r => setTimeout(r, 200)); 
+                }
+                isDisplaying = false;
+                statusMessage.textContent = "//REPEAT";
+            }
+
+            function handleInput(value) {
+                if (isDisplaying) return;
+                playerSequence.push(value);
+                const currentStep = playerSequence.length - 1;
+                const clickedButton = document.getElementById(`btn-${value}`);
+
+                clickedButton.classList.add('active');
+                setTimeout(() => { clickedButton.classList.remove('active'); }, 150);
+
+                if (value !== sequence[currentStep]) {
+                    statusMessage.textContent = "//FAILED";
+                    playerSequence = [];
+                    setTimeout(displaySequence, 1500);
+                    return;
+                }
+
+                if (playerSequence.length === sequence.length) {
+                    statusMessage.textContent = "//ASCENDED";
+                    setTimeout(advanceRewardScreen, 1200);
+                }
+            }
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => handleInput(parseInt(button.textContent)));
+            });
+
+            rewardScreen.addEventListener('click', advanceRewardScreen);
+            setTimeout(displaySequence, 2000); 
+        });
+    </script>
 </body>
 </html>
 
