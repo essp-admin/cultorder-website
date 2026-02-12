@@ -6,11 +6,8 @@
     <title>Cult Order</title>
     
     <meta property="og:title" content="Cult Order">
-    <meta property="og:description" content="Search, choose, and receive.">
     <meta property="og:image" content="https://tuweb.com/og-image-co.png">
-    <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://tuweb.com/og-image-co.png">
 
     <link rel="stylesheet" href="style.css">
     <style>
@@ -33,13 +30,25 @@
         #status-message {
             letter-spacing: 3px;
             font-size: 0.75rem;
-            margin-bottom: 20px;
-            height: 1.2rem;
+            margin-bottom: 25px;
+            /* Espacio reservado fijo para evitar saltos */
+            height: 1.5rem;
+            min-width: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
         }
 
         .game-buttons {
             display: flex;
-            gap: 15px; 
+            gap: 15px;
         }
 
         .sacred-button {
@@ -50,6 +59,7 @@
             color: #da0008;
             cursor: pointer;
             transition: none;
+            flex-shrink: 0; /* Evita que se deformen */
         }
 
         .sacred-button.active {
@@ -57,14 +67,13 @@
             color: #000;
         }
 
-        /* Reward Screen */
         #reward-screen {
             display: none;
             flex-direction: column;
             width: 85%;
             max-width: 600px;
             align-items: center;
-            cursor: pointer; /* Indica que se puede pulsar para volver */
+            cursor: pointer;
         }
 
         #reward-text {
@@ -73,14 +82,8 @@
             min-height: 5rem;
         }
 
-        .cursor {
-            animation: blink 0.8s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        .cursor { animation: blink 0.8s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .options-container {
             display: flex;
@@ -91,26 +94,17 @@
         }
 
         .option-btn {
-            background: none;
-            border: none;
-            color: #da0008;
-            font-family: 'OCRAStd', monospace;
-            cursor: pointer;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            padding: 10px;
+            background: none; border: none; color: #da0008;
+            font-family: 'OCRAStd', monospace; cursor: pointer;
+            font-size: 0.8rem; letter-spacing: 2px; padding: 10px;
         }
-
-        .option-btn:hover {
-            text-decoration: underline;
-        }
-
+        .option-btn:hover { text-decoration: underline; }
         .glitch-text { color: #555 !important; }
     </style>
 </head>
 <body>
     
-    <div id="game-state">
+    <div id="game-state" class="game-state">
         <div id="status-message"></div>
         <div class="game-buttons">
             <div class="sacred-button" id="btn-1">1</div>
@@ -129,7 +123,7 @@
         const sequence = [7, 1, 5, 3];
         let playerSequence = [];
         let isDisplaying = false;
-        let isFinalPhase = false; // Control para la redirección final
+        let isFinalPhase = false;
 
         const msg = document.getElementById('status-message');
         const rewardScreen = document.getElementById('reward-screen');
@@ -144,11 +138,13 @@
                 function type() {
                     if (i < text.length) {
                         target.innerHTML = text.substring(0, i + 1) + '<span class="cursor">_</span>';
+                        let delay = Math.floor(Math.random() * (70 - 30) + 30);
+                        const char = text[i];
+                        if (char === "," || char === "." || char === "?") { delay = 600; } 
+                        else if (char === " ") { delay = 120; }
                         i++;
-                        setTimeout(type, 40);
-                    } else {
-                        resolve();
-                    }
+                        setTimeout(type, delay);
+                    } else { resolve(); }
                 }
                 type();
             });
@@ -158,19 +154,18 @@
             let iterations = 0;
             const interval = setInterval(() => {
                 target.innerHTML = finalMsg.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join("") + '<span class="cursor">_</span>';
-                if (++iterations > 15) {
+                if (++iterations > 20) {
                     clearInterval(interval);
                     target.innerHTML = finalMsg + '<span class="cursor">_</span>';
                     target.classList.add('glitch-text');
                     setTimeout(() => location.reload(), 3000);
                 }
-            }, 80);
+            }, 70);
         }
 
         async function showPhase(type) {
             optionsContainer.style.opacity = "0";
             optionsContainer.innerHTML = "";
-
             if (type === 'start') {
                 document.getElementById('game-state').style.display = 'none';
                 rewardScreen.style.display = 'flex';
@@ -187,23 +182,15 @@
                     <button class="option-btn" onclick="event.stopPropagation(); showPhase('truth')">[ NO, I WANT THE TRUTH ]</button>
                 `;
             }
-            else if (type === 'glitch') {
-                glitchEffect(rewardText, "// ERROR: NO MESSAGE FOUND.");
-                return;
-            }
+            else if (type === 'glitch') { glitchEffect(rewardText, "// ERROR: NO MESSAGE FOUND."); return; }
             else if (type === 'truth') {
                 await typeEffect("Search, choose, and receive. The revelation will awaken inside you.", rewardText);
-                isFinalPhase = true; // Habilitamos la vuelta a casa al pulsar
+                isFinalPhase = true; 
             }
             optionsContainer.style.opacity = "1";
         }
 
-        // Redirección al pulsar la pantalla final
-        rewardScreen.addEventListener('click', () => {
-            if (isFinalPhase) {
-                location.reload(); // Vuelve al inicio del index.html
-            }
-        });
+        rewardScreen.addEventListener('click', () => { if (isFinalPhase) location.reload(); });
 
         async function runSequence() {
             isDisplaying = true;
