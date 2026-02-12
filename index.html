@@ -24,12 +24,11 @@
 
         #status-message {
             letter-spacing: 3px;
-            opacity: 1; /* Rojo sólido e intenso */
+            opacity: 1; 
             font-size: 0.75rem;
             color: #da0008;
             text-transform: uppercase;
             margin-bottom: 20px;
-            /* Eliminado cualquier rastro de text-shadow */
         }
 
         .game-state {
@@ -53,13 +52,12 @@
             color: #da0008;
             cursor: pointer;
             font-size: 0.9rem;
-            transition: none; /* Sin suavizados */
+            transition: none;
         }
 
         .sacred-button.active {
             background-color: #da0008;
             color: #000;
-            /* Eliminado el box-shadow glow */
         }
 
         #reward-screen {
@@ -133,8 +131,11 @@
 
             async function displaySequence() {
                 isDisplaying = true;
-                statusMessage.textContent = "//WATCH";
-                await new Promise(r => setTimeout(r, 1000));
+                statusMessage.textContent = "//OBSERVE THE NUMBERS";
+                await new Promise(r => setTimeout(r, 1200));
+                
+                statusMessage.textContent = "//INTERNALIZE THEM";
+                await new Promise(r => setTimeout(r, 800));
 
                 for (let i = 0; i < sequence.length; i++) {
                     const button = document.getElementById(`btn-${sequence[i]}`);
@@ -144,7 +145,8 @@
                     await new Promise(r => setTimeout(r, 200)); 
                 }
                 isDisplaying = false;
-                statusMessage.textContent = "//REPEAT";
+                playerSequence = [];
+                statusMessage.textContent = "//REPEAT THE PATTERN";
             }
 
             function handleInput(value) {
@@ -157,14 +159,14 @@
                 setTimeout(() => { clickedButton.classList.remove('active'); }, 150);
 
                 if (value !== sequence[currentStep]) {
-                    statusMessage.textContent = "//FAILED";
+                    statusMessage.textContent = "//ACCESS DENIED. FAILURE.";
                     playerSequence = [];
                     setTimeout(displaySequence, 1500);
                     return;
                 }
 
                 if (playerSequence.length === sequence.length) {
-                    statusMessage.textContent = "//ASCENDED";
+                    statusMessage.textContent = "//SEQUENCE ASCENDED. REVELATION AWAITS.";
                     setTimeout(advanceRewardScreen, 1200);
                 }
             }
