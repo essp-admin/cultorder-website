@@ -35,7 +35,6 @@
             font-size: 0.75rem;
             margin-bottom: 20px;
             height: 1.2rem;
-            opacity: 1;
         }
 
         .game-buttons {
@@ -65,6 +64,7 @@
             width: 85%;
             max-width: 600px;
             align-items: center;
+            cursor: pointer; /* Indica que se puede pulsar para volver */
         }
 
         #reward-text {
@@ -105,10 +105,7 @@
             text-decoration: underline;
         }
 
-        /* Clase para el castigo visual */
-        .glitch-text {
-            color: #555 !important;
-        }
+        .glitch-text { color: #555 !important; }
     </style>
 </head>
 <body>
@@ -125,22 +122,21 @@
 
     <div id="reward-screen">
         <div id="reward-text"></div>
-        <div class="options-container" id="options">
-            </div>
+        <div class="options-container" id="options"></div>
     </div>
 
     <script>
         const sequence = [7, 1, 5, 3];
         let playerSequence = [];
         let isDisplaying = false;
+        let isFinalPhase = false; // Control para la redirección final
+
         const msg = document.getElementById('status-message');
         const rewardScreen = document.getElementById('reward-screen');
         const rewardText = document.getElementById('reward-text');
         const optionsContainer = document.getElementById('options');
-
         const chars = "$%&/!#?@<>[]{}*=+";
 
-        // Efecto de escritura mecánica
         function typeEffect(text, target) {
             return new Promise(resolve => {
                 target.innerHTML = "";
@@ -158,25 +154,19 @@
             });
         }
 
-        // Efecto Glitch de desmonte
         function glitchEffect(target, finalMsg) {
             let iterations = 0;
             const interval = setInterval(() => {
-                target.innerHTML = finalMsg.split("")
-                    .map(() => chars[Math.floor(Math.random() * chars.length)])
-                    .join("") + '<span class="cursor">_</span>';
-                
-                iterations++;
-                if (iterations > 15) {
+                target.innerHTML = finalMsg.split("").map(() => chars[Math.floor(Math.random() * chars.length)]).join("") + '<span class="cursor">_</span>';
+                if (++iterations > 15) {
                     clearInterval(interval);
                     target.innerHTML = finalMsg + '<span class="cursor">_</span>';
                     target.classList.add('glitch-text');
-                    setTimeout(() => location.reload(), 3000); // Reinicio tras el error
+                    setTimeout(() => location.reload(), 3000);
                 }
             }, 80);
         }
 
-        // Manejo de fases y decisiones
         async function showPhase(type) {
             optionsContainer.style.opacity = "0";
             optionsContainer.innerHTML = "";
@@ -185,39 +175,42 @@
                 document.getElementById('game-state').style.display = 'none';
                 rewardScreen.style.display = 'flex';
                 await typeEffect("Do you prefer to know the whole, painful truth, or just the part that allows for a peaceful life?", rewardText);
-                
                 optionsContainer.innerHTML = `
-                    <button class="option-btn" onclick="showPhase('truth')">[ THE TRUTH ]</button>
-                    <button class="option-btn" onclick="showPhase('paradox')">[ PEACEFUL LIFE ]</button>
+                    <button class="option-btn" onclick="event.stopPropagation(); showPhase('truth')">[ THE TRUTH ]</button>
+                    <button class="option-btn" onclick="event.stopPropagation(); showPhase('paradox')">[ PEACEFUL LIFE ]</button>
                 `;
             } 
             else if (type === 'paradox') {
                 await typeEffect("PEACE REQUIRES IGNORANCE. ARE YOU SURE?", rewardText);
                 optionsContainer.innerHTML = `
-                    <button class="option-btn" onclick="showPhase('glitch')">[ YES ]</button>
-                    <button class="option-btn" onclick="showPhase('truth')">[ NO, I WANT THE TRUTH ]</button>
+                    <button class="option-btn" onclick="event.stopPropagation(); showPhase('glitch')">[ YES ]</button>
+                    <button class="option-btn" onclick="event.stopPropagation(); showPhase('truth')">[ NO, I WANT THE TRUTH ]</button>
                 `;
             }
             else if (type === 'glitch') {
                 glitchEffect(rewardText, "// ERROR: NO MESSAGE FOUND.");
-                return; // No mostramos más opciones
+                return;
             }
             else if (type === 'truth') {
                 await typeEffect("Search, choose, and receive. The revelation will awaken inside you.", rewardText);
-                // Aquí podrías añadir un link final o un cierre
+                isFinalPhase = true; // Habilitamos la vuelta a casa al pulsar
             }
-
             optionsContainer.style.opacity = "1";
         }
 
-        // Lógica del juego original (Intensidad sólida)
+        // Redirección al pulsar la pantalla final
+        rewardScreen.addEventListener('click', () => {
+            if (isFinalPhase) {
+                location.reload(); // Vuelve al inicio del index.html
+            }
+        });
+
         async function runSequence() {
             isDisplaying = true;
             msg.textContent = "//OBSERVE THE NUMBERS";
             await new Promise(r => setTimeout(r, 1200));
             msg.textContent = "//INTERNALIZE THEM";
             await new Promise(r => setTimeout(r, 800));
-            
             for (let s of sequence) {
                 const btn = document.getElementById(`btn-${s}`);
                 btn.classList.add('active');
@@ -235,7 +228,6 @@
                 const val = parseInt(btn.textContent);
                 btn.classList.add('active');
                 setTimeout(() => btn.classList.remove('active'), 150);
-                
                 playerSequence.push(val);
                 if (val !== sequence[playerSequence.length - 1]) {
                     msg.textContent = "//ACCESS DENIED. FAILURE.";
