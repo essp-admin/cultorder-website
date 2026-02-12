@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cult Order - 57</title>
-    <link rel="stylesheet" href="../style.css">
+    <title>Cult Order</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         body {
             background-color: #000;
@@ -121,7 +121,8 @@
             function advanceRewardScreen() {
                 currentRewardStep++;
                 if (currentRewardStep > REWARD_PHRASES.length) {
-                    window.location.href = '../index.html';
+                    // Aquí decides: ¿Reiniciar el bucle o dejar el mensaje final?
+                    location.reload(); 
                     return;
                 }
                 gameState.style.display = 'none';
